@@ -17,4 +17,13 @@ public class Conta {
 
     private Usuario correntista;
     private List<Transacao> transacoes;
+
+    public Conta() {
+    }
+
+    public Conta(String numero, String descricao, Usuario correntista) {
+        this.numero = numero;
+        this.descricao = descricao;
+        this.correntista = correntista;
+    }
 }

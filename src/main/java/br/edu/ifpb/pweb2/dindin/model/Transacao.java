@@ -22,4 +22,16 @@ public class Transacao {
     private Conta conta;
     private Categoria categoria;
     private Comentario comentario;
+
+    public Transacao() {
+    }
+
+    public Transacao(LocalDate data, BigDecimal valor, TipoTransacao movimento, Conta conta, Categoria categoria, Comentario comentario) {
+        this.data = data;
+        this.valor = valor;
+        this.movimento = movimento;
+        this.conta = conta;
+        this.categoria = categoria;
+        this.comentario = comentario;
+    }
 }

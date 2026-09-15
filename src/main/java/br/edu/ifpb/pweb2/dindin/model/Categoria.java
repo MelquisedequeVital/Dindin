@@ -14,4 +14,12 @@ public class Categoria {
     private Long id;
     private String nome;
     private Natureza natureza;
+
+    public Categoria() {
+    }
+
+    public Categoria(String nome, Natureza natureza) {
+        this.nome = nome;
+        this.natureza = natureza;
+    }
 }

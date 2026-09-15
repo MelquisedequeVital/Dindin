@@ -19,4 +19,15 @@ public class Usuario {
     private Role role;
     private boolean bloqueado;
     private List<Transacao> transacoes;
+
+    public Usuario() {
+    }
+
+    public Usuario(String nome, String login, String senha, Role role, boolean bloqueado) {
+        this.nome = nome;
+        this.login = login;
+        this.senha = senha;
+        this.role = role;
+        this.bloqueado = bloqueado;
+    }
 }

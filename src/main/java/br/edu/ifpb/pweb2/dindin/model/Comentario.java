@@ -12,4 +12,12 @@ public class Comentario {
     private Long id;
     private String texto;
     private Transacao transacao;
+
+    public Comentario() {
+    }
+
+    public Comentario(String texto, Transacao transacao) {
+        this.texto = texto;
+        this.transacao = transacao;
+    }
 }

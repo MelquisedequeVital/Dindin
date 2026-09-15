@@ -8,4 +8,12 @@ import jakarta.persistence.Entity;
 public class CartaoDeCredito extends Conta {
     private Integer diaFechamento;
     private BigDecimal limiteCredito;
+
+    public CartaoDeCredito() {
+    }
+
+    public CartaoDeCredito(Integer diaFechamento, BigDecimal limiteCredito) {
+        this.diaFechamento = diaFechamento;
+        this.limiteCredito = limiteCredito;
+    }
 }
