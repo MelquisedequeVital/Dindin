@@ -3,10 +3,14 @@ package br.edu.ifpb.pweb2.dindin.model;
 import java.util.List;
 
 import br.edu.ifpb.pweb2.dindin.model.enums.Role;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 @Entity 
@@ -20,7 +24,8 @@ public class Usuario {
     private String senha;
     private Role role;
     private boolean bloqueado;
-    private List<Transacao> transacoes;
+    @OneToMany(mappedBy = "correntista", cascade = CascadeType.ALL, fetch = FetchType.LAZY)  
+    private List<Conta> contas;
 
     public Usuario() {
     }
@@ -31,5 +36,9 @@ public class Usuario {
         this.senha = senha;
         this.role = role;
         this.bloqueado = bloqueado;
+    }
+
+    public void addConta(Conta conta){
+        this.contas.add(conta);
     }
 }

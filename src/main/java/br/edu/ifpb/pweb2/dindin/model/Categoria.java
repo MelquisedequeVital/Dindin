@@ -3,6 +3,8 @@ package br.edu.ifpb.pweb2.dindin.model;
 
 import br.edu.ifpb.pweb2.dindin.model.enums.Natureza;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import lombok.Data;
 import jakarta.persistence.GeneratedValue;
@@ -16,6 +18,7 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    @Enumerated(EnumType.STRING)
     private Natureza natureza;
 
     public Categoria() {
