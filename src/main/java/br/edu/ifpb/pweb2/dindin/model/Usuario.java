@@ -2,13 +2,15 @@ package br.edu.ifpb.pweb2.dindin.model;
 
 import java.util.List;
 
-import br.edu.ifpb.pweb2.dindin.enums.Role;
+import br.edu.ifpb.pweb2.dindin.model.enums.Role;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Data;
 
 @Entity 
+@Data 
 public class Usuario {
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,4 +1,4 @@
-package br.edu.ifpb.pweb2.dindin.enums;
+package br.edu.ifpb.pweb2.dindin.model.enums;
 
 public enum Role {
     ROLE_CORRENTISTA,

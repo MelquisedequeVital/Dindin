@@ -1,12 +1,15 @@
 package br.edu.ifpb.pweb2.dindin.model;
 
-import br.edu.ifpb.pweb2.dindin.enums.Natureza;
+
+import br.edu.ifpb.pweb2.dindin.model.enums.Natureza;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.Data;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
 @Entity 
+@Data 
 public class Categoria {
 
     @Id 
