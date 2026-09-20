@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ifpb.pweb2.dindin.model.Usuario;
 
-@Service 
+@Service
 public class AuthService {
 
     private final UsuarioRepository usuarioRepository;
@@ -17,11 +17,13 @@ public class AuthService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public boolean credenciaisDeUsuarioValidas(String username, String senha){
-        Optional<Usuario> usuarioEncnontrado = usuarioRepository.findByUsername(username);
-        if(usuarioEncnontrado.isEmpty()){
-            return false;
+    public Optional<Usuario> autenticarUsuario(String username, String senha) {
+        Optional<Usuario> usuarioEncontrado = usuarioRepository.findByUsername(username);
+        if (usuarioEncontrado.isPresent() && usuarioEncontrado.get().getSenha().equals(senha)) {
+            return usuarioEncontrado;
         }
-        return usuarioEncnontrado.get().getSenha().equals(senha);
+
+        return Optional.empty();
+
     }
 }
