@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.edu.ifpb.pweb2.dindin.model.enums.Role;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 
 @Entity 
@@ -20,7 +22,8 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private String login;
+    @Column(unique = true, nullable = false) 
+    private String username;
     private String senha;
     private Role role;
     private boolean bloqueado;
@@ -30,9 +33,9 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String nome, String login, String senha, Role role, boolean bloqueado) {
+    public Usuario(String nome, String username, String senha, Role role, boolean bloqueado) {
         this.nome = nome;
-        this.login = login;
+        this.username = username;
         this.senha = senha;
         this.role = role;
         this.bloqueado = bloqueado;
