@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Correntista</title>
+</head>
+<body>
+    <!--TODO: adicionar navegação e um verificador de admin para cair nessa pagina-->
+    <form th:action="@{/admin/correntista/adicionar}" method="post" th:object="${correntista}">
+        <label for="nome">Nome: </label>
+        <input type="text" th:field="*{nome}"><br/><br/>
+
+        <label for="username">Login: </label>
+        <input type="email" th:field="*{username}"><br/><br/>
+
+        <!-- TODO: adicionar um confirmar senha -->
+        <label for="senha">Senha: </label>
+        <input type="password" th:field="*{senha}"><br/><br/>
+
+        <label for="role">Permissão: </label>
+        <select th:field="*{role}">
+            <option th:each=" r : ${roles}" th:value="${r}" th:text="${r}"></option>
+        </select><br/><br/>
+
+        <button type="submit">Salvar</button>
+    </form><br/>
+
+    <p th:text="${mensagemUsernameInvalido}" style="color: red;"></p>
+</body>
+</html>

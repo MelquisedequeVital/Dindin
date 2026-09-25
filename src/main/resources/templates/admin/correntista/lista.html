@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Correntistas</title>
+</head>
+
+<body>
+    <div style="display: flex; justify-content: space-between;">
+        <h1>Correntistas</h1>
+        <a th:href="@{/admin/correntista/form}">Adicionar Correntista</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Login</th>
+                <th>Permissão</th>
+                <th>Contas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="cor : ${correntistas}">
+                <td th:text="${cor.nome}"></td>
+                <td th:text="${cor.username}"></td>
+                <td th:text="${cor.role}"></td>
+                <td>
+                    <a th:href="@{/admin/contas/{id}(id=${cor.id})}">Contas</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

@@ -29,7 +29,7 @@ public class Usuario {
     private String senha;
     @Enumerated(EnumType.STRING)
     private Role role;
-    private boolean bloqueado;
+    private boolean bloqueado = false;
     @OneToMany(mappedBy = "correntista", cascade = CascadeType.ALL, fetch = FetchType.LAZY)  
     private List<Conta> contas;
 

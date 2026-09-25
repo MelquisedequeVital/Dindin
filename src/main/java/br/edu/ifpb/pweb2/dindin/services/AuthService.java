@@ -11,6 +11,8 @@ import br.edu.ifpb.pweb2.dindin.model.Usuario;
 @Service
 public class AuthService {
 
+    //TODO: adicionar interceptador e hash de senha
+
     private final UsuarioRepository usuarioRepository;
 
     AuthService(UsuarioRepository usuarioRepository) {
