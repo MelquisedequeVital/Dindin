@@ -3,6 +3,7 @@ package br.edu.ifpb.pweb2.dindin.model;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +19,8 @@ public class Conta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String numero;
+    @Column(unique = true, nullable = false) 
+    private Integer numero;
     private String descricao;
 
     @ManyToOne 
@@ -31,7 +33,7 @@ public class Conta {
     public Conta() {
     }
 
-    public Conta(String numero, String descricao, Usuario correntista) {
+    public Conta(Integer numero, String descricao, Usuario correntista) {
         this.numero = numero;
         this.descricao = descricao;
         this.correntista = correntista;

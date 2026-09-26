@@ -22,28 +22,32 @@ public class AdminController {
     @Autowired 
     private UsuarioService usuarioService; 
 
-    @GetMapping("correntista/lista")
+    @GetMapping("/correntistas")
     public String listaCorrentista(Model model){
         model.addAttribute("correntistas", usuarioService.findAll());
-        return "admin/correntista/lista";
+        return "admin/correntistas/lista";
     }
 
-    @GetMapping("/correntista/form")
+    @GetMapping("/correntistas/novo")
     public String formNovoCorrentista(Model model){
         model.addAttribute("correntista", new Usuario());
         model.addAttribute("roles", List.of(Role.values()));
-        return "admin/correntista/form";
+        return "admin/correntistas/form";
     }
 
-    @PostMapping("/correntista/adicionar")
+    @PostMapping("/correntistas")
     public String adicionarCorrentista(Usuario usuario, RedirectAttributes attr){
 
-        if(usuarioService.usernameJaExiste(usuario.getUsername())){
+        if(usuarioService.usuarioJaExiste(usuario.getUsername())){
             attr.addFlashAttribute("mensagemUsernameInvalido", "Esse username já existe, pense em outro");
-            return "redirect:form";
+            return "redirect:/admin/correntistas/novo";
         }
         
         usuarioService.save(usuario);
-        return "redirect:lista";
+        return "redirect:/admin/correntistas";
     }
+
+
+
+    
 }

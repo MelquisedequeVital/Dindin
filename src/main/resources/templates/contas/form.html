@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Conta</title>
+</head>
+<body>
+    <h1>Formulário Nova Conta</h1>
+    <form th:action="@{/contas}" th:object="${conta}" method="post">
+        <label for="numero">Número: </label>
+        <input type="number" th:field="*{numero}"><br/><br/>
+
+        <label for="descricao">Descrição</label>
+        <input type="text"  th:field="*{descricao}"><br/><br/>
+
+        <button type="submit">Adicionar Conta</button>
+    </form>
+    <p th:text="${mensagemContaInvalida}" style="color: red;"></p>
+</body>
+</html>

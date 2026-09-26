@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h1 style="display: flex; justify-content: center;">Pagina Inicial</h1>
+    <div style="display: flex; justify-content: space-around;">
+        <div >
+            <a th:href="@{/login}">Login</a>
+        </div>
+        <div>
+            <a th:href="@{/cadastro}">Cadastro</a>
+        </div>
+    </div>
+</body>
+</html>

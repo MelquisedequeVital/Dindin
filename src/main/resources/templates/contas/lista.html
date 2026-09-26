@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contas</title>
+</head>
+<body>
+    <div style="display: flex; justify-content: space-around;">
+        <!--TODO: adicionar nome do correntista aqui-->
+        <h1>Contas</h1>
+        <button><a th:href="@{/contas/nova}">Adicionar Conta</a></button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Numero</th>
+                <th>Descricao</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each=" con : ${contas}">
+                <td th:text="${con.numero}"></td>
+                <td th:text="${con.descricao}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

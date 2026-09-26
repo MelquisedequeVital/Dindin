@@ -42,8 +42,8 @@ public class AuthController {
                 oldSession.invalidate();
             }
             HttpSession session = httpServletRequest.getSession(true);
-            session.setAttribute("usuario", usuarioAutenticado.get());
-            return "redirect:/catalogo";
+            session.setAttribute("usuarioLogado", usuarioAutenticado.get());
+            return "redirect:/contas";
         }
 
         attr.addFlashAttribute("mensagemCredenciaisInvalidas", "Credenciais Inválidas");
@@ -59,6 +59,6 @@ public class AuthController {
         }
 
         attr.addAttribute("mensagemLogout", "Você deslogou com sucesso");
-        return "redirect:/home";
+        return "redirect:/";
     }
 }

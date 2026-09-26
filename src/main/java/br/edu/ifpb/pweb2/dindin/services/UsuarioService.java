@@ -1,11 +1,13 @@
 package br.edu.ifpb.pweb2.dindin.services;
 
+import java.lang.foreign.Linker.Option;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.edu.ifpb.pweb2.dindin.model.Conta;
 import br.edu.ifpb.pweb2.dindin.model.Usuario;
 import br.edu.ifpb.pweb2.dindin.repository.UsuarioRepository;
 
@@ -29,14 +31,10 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
     }
 
-    public boolean usernameJaExiste(String username){
+    public boolean usuarioJaExiste(String username){
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findByUsername(username);
         
-        if(usuarioEncontrado.isPresent()){
-            return true;
-        }
-
-        return false;
+        return usuarioEncontrado.isPresent();
     }
 
 }
