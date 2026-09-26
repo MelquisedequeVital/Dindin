@@ -47,4 +47,8 @@ public class Usuario {
     public void addConta(Conta conta){
         this.contas.add(conta);
     }
+
+    public boolean isAdmin(){
+        return this.role == role.ROLE_ADMINISTRADOR;
+    }
 }

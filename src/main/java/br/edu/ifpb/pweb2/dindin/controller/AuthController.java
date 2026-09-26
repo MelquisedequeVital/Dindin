@@ -43,6 +43,9 @@ public class AuthController {
             }
             HttpSession session = httpServletRequest.getSession(true);
             session.setAttribute("usuarioLogado", usuarioAutenticado.get());
+            if(usuarioAutenticado.get().isAdmin()){
+                return "redirect:/admin/correntistas";
+            }
             return "redirect:/contas";
         }
 
