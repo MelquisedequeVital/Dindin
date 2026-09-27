@@ -31,10 +31,10 @@
         </thead>
         <tbody>
             <tr th:each="t : ${transacoes}">
-                <td th:text="${t.data}">2026-01-01</td>
+                <td th:text="${#temporals.format(t.data, 'dd/MM/yyyy')}">01/01/2026</td>
                 <td th:text="${t.descricao}">Descrição</td>
                 <td th:text="${t.categoria != null ? t.categoria.nome : 'Sem Categoria'}">Categoria</td>
-                <td th:text="${'R$ ' + t.valor}">0.00</td>
+                <td th:text="${'R$ ' + #numbers.formatDecimal(t.valor, 1, 'POINT', 2, 'COMMA')}">R$0,00</td>
 
                 <!-- Coluna dos Comentários (UC05 / UC06) -->
                 <td>
