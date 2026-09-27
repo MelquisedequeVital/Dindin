@@ -20,6 +20,10 @@ public class ContaService {
         return contaRepository.findByCorrentista(correntista);
     }
 
+    public Optional<Conta> findById(Long id){
+        return contaRepository.findById(id);
+    }
+
     public void salvar(Conta conta){
         contaRepository.save(conta);
     }

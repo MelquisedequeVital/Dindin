@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Extrato da Conta</title>
+</head>
+<body>
+
+    <h1 th:text="${'Extrato - Conta Nº ' + conta.numero}">Extrato</h1>
+
+    <p style="color: green;" th:if="${mensagemSucesso}" th:text="${mensagemSucesso}"></p>
+    <p style="color: red;" th:if="${mensagemErro}" th:text="${mensagemErro}"></p>
+
+    <div>
+        <a th:href="@{/transacoes/nova/{contaId}(contaId=${conta.id})}">+ Nova Transação</a> | 
+        <a th:href="@{/contas}">Voltar para Lista de Contas</a>
+    </div>
+
+    <br>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th>Categoria</th>
+                <th>Valor</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="t : ${transacoes}">
+                <td th:text="${t.data}">2026-01-01</td>
+                <td th:text="${t.descricao}">Descrição</td>
+                <td th:text="${t.categoria != null ? t.categoria.nome : '-'}">Categoria</td>
+                <td th:text="${'R$ ' + t.valor}">0.00</td>
+                <td>
+                    <a th:href="@{/transacoes/editar/{id}(id=${t.id})}">Editar</a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(transacoes)}">
+                <td colspan="5">Nenhuma transação cadastrada nesta conta.</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${transacao.id == null ? 'Nova Transação' : 'Editar Transação'}">Formulário de Transação</title>
+</head>
+<body>
+
+    <h1 th:text="${transacao.id == null ? 'Nova Transação' : 'Editar Transação'}">Transação</h1>
+
+    <form th:action="@{/transacoes/salvar}" th:object="${transacao}" method="post">
+        
+        <!-- Campo Oculto: ID da Transação (necessário para edição) -->
+        <input type="hidden" th:field="*{id}" />
+
+        <!-- Campo Oculto: ID da Conta associada -->
+        <input type="hidden" th:field="*{conta.id}" />
+
+        <div>
+            <label for="data">Data:</label><br>
+            <input type="date" id="data" th:field="*{data}" required />
+        </div>
+        <br>
+
+        <div>
+            <label for="descricao">Descrição:</label><br>
+            <input type="text" id="descricao" th:field="*{descricao}" placeholder="Ex: Compra de supermercado, Salário..." required />
+        </div>
+        <br>
+
+        <div>
+            <label for="valor">Valor (R$):</label><br>
+            <input type="number" id="valor" step="0.01" th:field="*{valor}" placeholder="0.00" required />
+        </div>
+        <br>
+
+        <div>
+            <label for="movimento">Tipo de Movimento:</label><br>
+            <select id="movimento" th:field="*{movimento}" required>
+                <option value="">-- Selecione --</option>
+                <option value="CREDITO">Crédito</option>
+                <option value="DEBITO">Débito</option>
+            </select>
+        </div>
+        <br>
+
+        <div>
+            <label for="categoria">Categoria:</label><br>
+            <select id="categoria" th:field="*{categoria.id}" required>
+                <option value="">-- Selecione uma Categoria --</option>
+                <option th:each="cat : ${categorias}" 
+                        th:value="${cat.id}" 
+                        th:text="${cat.nome + ' (' + cat.natureza + ')'}">
+                </option>
+            </select>
+        </div>
+        <br>
+
+        <!-- Comentário opcional (atende UC03 e UC05 já na criação) -->
+        <div>
+            <label for="comentarioTexto">Comentário (opcional):</label><br>
+            <textarea id="comentarioTexto" th:field="*{comentario.texto}" rows="3" cols="40" placeholder="Adicione detalhes extras sobre esta transação..."></textarea>
+        </div>
+        <br>
+
+        <div>
+            <button type="submit">Salvar Transação</button>
+            <a th:href="@{/contas}">Cancelar</a>
+        </div>
+
+    </form>
+
+</body>
+</html>

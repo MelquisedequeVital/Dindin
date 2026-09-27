@@ -24,6 +24,7 @@ public class Transacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate data;
+    private String descricao;
     private BigDecimal valor;
     
     @Enumerated(EnumType.STRING)
@@ -44,8 +45,9 @@ public class Transacao {
     public Transacao() {
     }
 
-    public Transacao(LocalDate data, BigDecimal valor, TipoTransacao movimento, Conta conta, Categoria categoria, Comentario comentario) {
+    public Transacao(LocalDate data, String descricao, BigDecimal valor, TipoTransacao movimento, Conta conta, Categoria categoria, Comentario comentario) {
         this.data = data;
+        this.descricao = descricao;
         this.valor = valor;
         this.movimento = movimento;
         this.conta = conta;

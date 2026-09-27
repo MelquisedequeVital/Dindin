@@ -20,6 +20,11 @@ public class Categoria {
     private String nome;
     @Enumerated(EnumType.STRING)
     private Natureza natureza;
+    //Pq as categorias podem ser ativadas e desativadas, de acordo com o documento do professor:
+    //Um conjunto de categorias mínimas a serem indicadas devem ser obrigatoriamente já predefinidas pelo sistema e o
+    //usuário administrador pode cadastrar novas ou mesmo desativar uma das predefinidas (apenas o
+    //administrador!).
+    private Boolean ativo = true;
 
     public Categoria() {
     }
@@ -27,5 +32,6 @@ public class Categoria {
     public Categoria(String nome, Natureza natureza) {
         this.nome = nome;
         this.natureza = natureza;
+        this.ativo = true;
     }
 }

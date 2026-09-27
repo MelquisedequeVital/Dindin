@@ -1,11 +1,13 @@
 package br.edu.ifpb.pweb2.dindin.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.edu.ifpb.pweb2.dindin.model.Conta;
 import br.edu.ifpb.pweb2.dindin.model.Usuario;
 import br.edu.ifpb.pweb2.dindin.services.ContaService;
+import br.edu.ifpb.pweb2.dindin.services.TransacaoService;
 import br.edu.ifpb.pweb2.dindin.services.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 
@@ -25,6 +28,8 @@ public class UsuarioController {
     @Autowired
     private ContaService contaService;
 
+    @Autowired 
+    private TransacaoService transacaoService;
 
     @GetMapping("/contas")
     public String listaContas(HttpSession session, Model model) {
@@ -38,6 +43,21 @@ public class UsuarioController {
     public String contaForm(Model model) {
         model.addAttribute("conta", new Conta());
         return "contas/form";
+    }
+
+    //Rota pra exibir o extrato da conta ne
+    @GetMapping("/contas/{id}")
+    public String extratoConta(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes){
+        Optional<Conta> optConta = contaService.findById(id);
+        if (optConta.isEmpty()){
+            redirectAttributes.addFlashAttribute("mensagemErro","Conta não encontrada!");
+            return "redirect:/contas";
+        }
+
+        Conta conta = optConta.get();
+        model.addAttribute("conta",conta);
+        model.addAttribute("transacoes",transacaoService.findByConta(conta));
+        return "contas/extrato";
     }
 
 
