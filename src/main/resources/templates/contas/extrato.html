@@ -18,13 +18,14 @@
 
     <br>
 
-    <table border="1">
+    <table border="1" cellpadding="5">
         <thead>
             <tr>
                 <th>Data</th>
                 <th>Descrição</th>
                 <th>Categoria</th>
                 <th>Valor</th>
+                <th>Comentário</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -32,14 +33,42 @@
             <tr th:each="t : ${transacoes}">
                 <td th:text="${t.data}">2026-01-01</td>
                 <td th:text="${t.descricao}">Descrição</td>
-                <td th:text="${t.categoria != null ? t.categoria.nome : '-'}">Categoria</td>
+                <td th:text="${t.categoria != null ? t.categoria.nome : 'Sem Categoria'}">Categoria</td>
                 <td th:text="${'R$ ' + t.valor}">0.00</td>
+
+                <!-- Coluna dos Comentários (UC05 / UC06) -->
                 <td>
-                    <a th:href="@{/transacoes/editar/{id}(id=${t.id})}">Editar</a>
+                    <!-- Caso JÁ EXISTA comentário: Exibe o texto e botões para Editar / Remover -->
+                    <div th:if="${t.comentario != null}">
+                        <form th:action="@{/comentarios/salvar}" method="post">
+                            <input type="hidden" name="transacaoId" th:value="${t.id}">
+                            <input type="hidden" name="contaId" th:value="${conta.id}">
+                            <input type="text" name="texto" th:value="${t.comentario.texto}" required>
+                            <button type="submit">Salvar Edição</button>
+                        </form>
+                        <form th:action="@{/comentarios/remover/{transacaoId}(transacaoId=${t.id})}" method="post">
+                            <input type="hidden" name="contaId" th:value="${conta.id}">
+                            <button type="submit" onclick="return confirm('Deseja remover o comentário?')">Remover</button>
+                        </form>
+                    </div>
+
+                    <!-- Caso NÃO EXISTA comentário: Exibe formulário para Adicionar -->
+                    <div th:if="${t.comentario == null}">
+                        <form th:action="@{/comentarios/salvar}" method="post">
+                            <input type="hidden" name="transacaoId" th:value="${t.id}">
+                            <input type="hidden" name="contaId" th:value="${conta.id}">
+                            <input type="text" name="texto" placeholder="Adicionar comentário..." required>
+                            <button type="submit">Adicionar</button>
+                        </form>
+                    </div>
+                </td>
+
+                <td>
+                    <a th:href="@{/transacoes/editar/{id}(id=${t.id})}">Editar Transação</a>
                 </td>
             </tr>
             <tr th:if="${#lists.isEmpty(transacoes)}">
-                <td colspan="5">Nenhuma transação cadastrada nesta conta.</td>
+                <td colspan="6">Nenhuma transação cadastrada nesta conta.</td>
             </tr>
         </tbody>
     </table>
