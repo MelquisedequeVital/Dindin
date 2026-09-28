@@ -1,74 +1,148 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${transacao.id == null ? 'Nova Transação' : 'Editar Transação'}">Formulário de Transação</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${transacao.id == null ? 'Dindin - Nova Transação' : 'Dindin - Editar Transação'}">Transação</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            purple: '#7C3AED',
+                            purpleHover: '#6D28D9',
+                            pinkLight: '#FCE7F3',
+                            pinkText: '#DB2777'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body>
+<body class="bg-[#FAFAFA] text-gray-800 antialiased font-sans min-h-screen flex flex-col">
 
-    <h1 th:text="${transacao.id == null ? 'Nova Transação' : 'Editar Transação'}">Transação</h1>
+    <header class="w-full bg-white border-b border-gray-100 px-6 lg:px-12 py-4 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-2 text-brand-purple">
+            <span class="material-symbols-outlined text-3xl">savings</span>
+            <span class="text-2xl font-extrabold tracking-tight text-gray-900">dindin</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <a th:href="@{/contas}" class="hidden sm:flex items-center gap-2 border border-gray-200 text-gray-600 px-4 py-2 rounded-full hover:bg-gray-50 transition text-sm font-semibold">
+                <span class="material-symbols-outlined text-sm">close</span>
+                Cancelar
+            </a>
+        </div>
+    </header>
 
-    <form th:action="@{/transacoes/salvar}" th:object="${transacao}" method="post">
+    <main class="flex-grow w-full max-w-2xl mx-auto px-6 lg:px-12 py-10">
         
-        <!-- Campo Oculto: ID da Transação (necessário para edição) -->
-        <input type="hidden" th:field="*{id}" />
-
-        <!-- Campo Oculto: ID da Conta associada -->
-        <input type="hidden" th:field="*{conta.id}" />
-
-        <div>
-            <label for="data">Data:</label><br>
-            <input type="date" id="data" th:field="*{data}" required />
-        </div>
-        <br>
-
-        <div>
-            <label for="descricao">Descrição:</label><br>
-            <input type="text" id="descricao" th:field="*{descricao}" placeholder="Ex: Compra de supermercado, Salário..." required />
-        </div>
-        <br>
-
-        <div>
-            <label for="valor">Valor (R$):</label><br>
-            <input type="number" id="valor" step="0.01" th:field="*{valor}" placeholder="0.00" required />
-        </div>
-        <br>
-
-        <div>
-            <label for="movimento">Tipo de Movimento:</label><br>
-            <select id="movimento" th:field="*{movimento}" required>
-                <option value="">-- Selecione --</option>
-                <option value="CREDITO">Crédito</option>
-                <option value="DEBITO">Débito</option>
-            </select>
-        </div>
-        <br>
-
-        <div>
-            <label for="categoria">Categoria:</label><br>
-            <select id="categoria" th:field="*{categoria.id}" required>
-                <option value="">-- Selecione uma Categoria --</option>
-                <option th:each="cat : ${categorias}" 
-                        th:value="${cat.id}" 
-                        th:text="${cat.nome + ' (' + cat.natureza + ')'}">
-                </option>
-            </select>
-        </div>
-        <br>
-
-        <!-- Comentário opcional (atende UC03 e UC05 já na criação) -->
-        <div>
-            <label for="comentarioTexto">Comentário (opcional):</label><br>
-            <textarea id="comentarioTexto" th:field="*{comentario.texto}" rows="3" cols="40" placeholder="Adicione detalhes extras sobre esta transação..."></textarea>
-        </div>
-        <br>
-
-        <div>
-            <button type="submit">Salvar Transação</button>
-            <a th:href="@{/contas}">Cancelar</a>
+        <div class="mb-8">
+            <div class="flex items-center gap-2 text-brand-purple text-xs font-bold uppercase tracking-wider mb-2 bg-brand-purple/10 w-fit px-3 py-1 rounded-full">
+                <span class="material-symbols-outlined text-sm">receipt_long</span> Transação
+            </div>
+            <h1 class="text-3xl font-extrabold text-gray-900" th:text="${transacao.id == null ? 'Nova Transação' : 'Editar Transação'}"></h1>
+            <p class="text-sm text-gray-500 mt-1">Preencha os dados abaixo para registrar a movimentação.</p>
         </div>
 
-    </form>
+        <div class="bg-white border border-gray-100 rounded-2xl p-6 md:p-8 shadow-sm">
+            <form th:action="@{/transacoes/salvar}" th:object="${transacao}" method="post" class="space-y-6">
+                
+                <input type="hidden" th:field="*{id}" />
+                <input type="hidden" th:field="*{conta.id}" />
+
+                <!-- Linha 1: Descrição e Valor -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="descricao" class="block text-sm font-semibold text-gray-700 mb-1.5">Descrição</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">edit_note</span>
+                            <input type="text" id="descricao" th:field="*{descricao}" placeholder="Ex: Mercado, Salário..." required 
+                                class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-purple focus:border-brand-purple outline-none transition text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="valor" class="block text-sm font-semibold text-gray-700 mb-1.5">Valor (R$)</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">attach_money</span>
+                            <input type="number" id="valor" step="0.01" th:field="*{valor}" placeholder="0.00" required 
+                                class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-purple focus:border-brand-purple outline-none transition text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Linha 2: Data e Movimento -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="data" class="block text-sm font-semibold text-gray-700 mb-1.5">Data</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">calendar_today</span>
+                            <input type="date" id="data" th:field="*{data}" required 
+                                class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-purple focus:border-brand-purple outline-none transition text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="movimento" class="block text-sm font-semibold text-gray-700 mb-1.5">Tipo de Movimento</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">swap_vert</span>
+                            <select id="movimento" th:field="*{movimento}" required 
+                                class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-purple focus:border-brand-purple outline-none transition text-sm appearance-none cursor-pointer">
+                                <option value="">-- Selecione --</option>
+                                <option value="CREDITO">Crédito (Entrada)</option>
+                                <option value="DEBITO">Débito (Saída)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Linha 3: Categoria -->
+                <div>
+                    <label for="categoria" class="block text-sm font-semibold text-gray-700 mb-1.5">Categoria</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">category</span>
+                        <select id="categoria" th:field="*{categoria.id}" required 
+                            class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-purple focus:border-brand-purple outline-none transition text-sm appearance-none cursor-pointer">
+                            <option value="">-- Selecione uma Categoria --</option>
+                            <option th:each="cat : ${categorias}" th:value="${cat.id}" th:text="${cat.nome + ' (' + cat.natureza + ')'}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Linha 4: Comentário -->
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label for="comentarioTexto" class="block text-sm font-semibold text-gray-700">Comentário</label>
+                        <span class="text-xs text-gray-400 font-medium">Opcional</span>
+                    </div>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-4 text-gray-400">chat</span>
+                        <textarea id="comentarioTexto" th:field="*{comentario.texto}" rows="3" placeholder="Adicione detalhes extras..." 
+                            class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-purple focus:border-brand-purple outline-none transition text-sm resize-none"></textarea>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <div class="pt-4 flex gap-4">
+                    <button type="submit" class="flex-grow bg-brand-purple hover:bg-brand-purpleHover text-white font-semibold py-3.5 rounded-xl transition flex items-center justify-center gap-2 shadow-md">
+                        <span class="material-symbols-outlined text-sm">save</span>
+                        Salvar Transação
+                    </button>
+                    <a th:href="@{/contas}" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3.5 px-6 rounded-xl transition flex items-center justify-center sm:hidden">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </main>
 
 </body>
 </html>
