@@ -1,37 +1,144 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contas</title>
+    <title>Dindin - Minhas Contas</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            purple: '#7C3AED',
+                            purpleHover: '#6D28D9',
+                            pinkLight: '#FCE7F3',
+                            pinkText: '#DB2777'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 
-<body>
-    <div style="display: flex; justify-content: space-around;">
-        <!--TODO: adicionar nome do correntista aqui, um header-->
-        <h1>Contas</h1>
-        <button><a th:href="@{/contas/nova}">Adicionar Conta</a></button>
-    </div>
-    <table>
-        <thead>
-            <tr>
-                <th>Numero: </th>
-                <th>Descrição: </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each=" con : ${contas}">
-                <td><a th:text="${con.numero}" th:href="@{/contas/{id}(id=${con.id})}"></a></td>
-                <td th:text="${con.descricao}"></td>
-                <td>
-                    <form th:action="@{/contas/{id}/deletar(id=${con.id})}" th:method="post" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja deletar esta conta?');">
-                        <button type="submit">Deletar</button>
-                    </form>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</body>
+<body class="bg-[#FAFAFA] text-gray-800 antialiased font-sans min-h-screen flex flex-col">
 
+    <!-- Top Navbar -->
+    <header class="w-full bg-white border-b border-gray-100 px-6 lg:px-12 py-4 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-2 text-brand-purple">
+            <span class="material-symbols-outlined text-3xl">savings</span>
+            <span class="text-2xl font-extrabold tracking-tight text-gray-900">dindin</span>
+        </div>
+        
+        <!-- Menu -->
+        <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-500">
+            <a href="/" class="hover:text-brand-purple transition">Início</a>
+            <a href="#" class="text-brand-purple border-b-2 border-brand-purple pb-1">Minhas Contas</a>
+        </nav>
+
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3 bg-gray-50 border border-gray-100 px-4 py-2 rounded-full">
+                <div class="w-8 h-8 rounded-full bg-brand-pinkLight text-brand-pinkText flex items-center justify-center font-bold text-sm">
+                    <span class="material-symbols-outlined text-sm">person</span>
+                </div>
+                <!-- Variavel original Thymeleaf -->
+                <span class="text-sm font-semibold text-gray-700" th:text="${nomeCorrentistaLogado}">Usuário</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow w-full max-w-7xl mx-auto px-6 lg:px-12 py-10">
+        
+        <!-- Page Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+            <div>
+                <h1 class="text-3xl font-extrabold text-gray-900">Minhas Contas</h1>
+                <p class="text-sm text-gray-500 mt-1">Gerencie suas contas correntes de forma simples e rápida.</p>
+            </div>
+            
+            <!-- Link original de adicionar conta -->
+            <a th:href="@{/contas/nova}" class="bg-brand-purple hover:bg-brand-purpleHover text-white font-semibold py-3 px-6 rounded-xl shadow-md transition flex items-center gap-2">
+                <span class="material-symbols-outlined">add</span>
+                Adicionar Conta
+            </a>
+        </div>
+
+        <!-- Section Title -->
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2 text-brand-purple font-bold text-sm tracking-wide">
+                <span class="material-symbols-outlined">account_balance</span>
+                CONTAS CADASTRADAS
+            </div>
+        </div>
+
+        <!-- Cards Grid (Antiga Tabela) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <!-- Iteração Thymeleaf (mantendo o th:each original) -->
+            <div th:each="con : ${contas}" class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow relative flex flex-col group">
+                
+                <div class="flex justify-between items-start mb-6">
+                    <!-- Ícone Dinâmico -->
+                    <div class="w-12 h-12 rounded-xl bg-brand-purple text-white flex items-center justify-center shadow-sm">
+                        <span class="material-symbols-outlined">account_balance_wallet</span>
+                    </div>
+                    
+                    <!-- Formulário de Deleção original -->
+                    <form th:action="@{/contas/{id}/deletar(id=${con.id})}" th:method="post" onsubmit="return confirm('Tem certeza que deseja deletar esta conta?');">
+                        <button type="submit" class="text-gray-300 hover:text-red-500 hover:bg-red-50 p-2 rounded-full transition flex items-center justify-center tooltip-trigger" title="Deletar Conta">
+                            <span class="material-symbols-outlined text-xl">delete</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Informações da Conta mantendo as variávies Originais -->
+                <div class="flex-grow">
+                    <a th:href="@{/contas/{id}(id=${con.id})}" class="block group-hover:text-brand-purple transition">
+                        <!-- Substitui o td descricao -->
+                        <h2 class="text-xl font-bold text-gray-900 mb-1" th:text="${con.descricao}">Nome da Conta</h2>
+                    </a>
+                    <p class="text-sm text-gray-500 font-medium flex items-center gap-1">
+                        Conta: 
+                        <!-- Substitui o td numero -->
+                        <span th:text="${con.numero}" class="font-mono bg-gray-100 px-2 py-0.5 rounded text-gray-700 font-bold">0000</span>
+                    </p>
+                </div>
+                
+                <hr class="border-gray-100 my-4">
+                
+                <!-- Botão para acessar/ver os detalhes -->
+                <a th:href="@{/contas/{id}(id=${con.id})}" class="text-brand-purple font-semibold text-sm flex items-center justify-between hover:text-brand-purpleHover transition w-full">
+                    Acessar detalhes
+                    <span class="material-symbols-outlined text-lg transform group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </a>
+            </div>
+            
+            <!-- Tratamento Visual caso a lista venha vazia -->
+            <div th:if="${contas == null or contas.empty}" class="col-span-full flex flex-col items-center justify-center bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl p-12 text-center mt-4">
+                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 mb-4">
+                    <span class="material-symbols-outlined text-3xl">account_balance_wallet</span>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2">Nenhuma conta encontrada</h3>
+                <p class="text-sm text-gray-500 mb-6">Você ainda não possui contas cadastradas na sua lista.</p>
+                <a th:href="@{/contas/nova}" class="text-brand-purple font-semibold hover:underline flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">add</span> Adicionar primeira conta
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+</body>
 </html>

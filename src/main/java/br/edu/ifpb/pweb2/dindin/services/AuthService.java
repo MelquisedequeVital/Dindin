@@ -2,6 +2,7 @@ package br.edu.ifpb.pweb2.dindin.services;
 
 import br.edu.ifpb.pweb2.dindin.repository.UsuarioRepository;
 import br.edu.ifpb.pweb2.dindin.util.PasswordUtil;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.Optional;
 
@@ -22,11 +23,16 @@ public class AuthService {
 
     public Optional<Usuario> autenticarUsuario(String username, String senha) {
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findByUsername(username);
-        if (usuarioEncontrado.isPresent() && PasswordUtil.checkPass(senha, usuarioEncontrado.get().getSenha())) {
+        //TODO: alterar quando tiver cadastro: PasswordUtil.checkPass(senha, usuarioEncontrado.get().getSenha())
+        if (usuarioEncontrado.isPresent() && usuarioEncontrado.get().getSenha().equals(senha)) {
             return usuarioEncontrado;
         }
 
         return Optional.empty();
 
+    }
+
+    public Usuario getUsuarioLogado(HttpSession session){
+        return (Usuario) session.getAttribute("usuarioLogado");
     }
 }

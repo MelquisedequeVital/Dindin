@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.edu.ifpb.pweb2.dindin.model.Conta;
 import br.edu.ifpb.pweb2.dindin.model.Usuario;
+import br.edu.ifpb.pweb2.dindin.services.AuthService;
 import br.edu.ifpb.pweb2.dindin.services.ContaService;
 import br.edu.ifpb.pweb2.dindin.services.TransacaoService;
 import br.edu.ifpb.pweb2.dindin.services.UsuarioService;
@@ -27,14 +28,18 @@ public class UsuarioController {
     @Autowired
     private ContaService contaService;
 
-    @Autowired 
+    @Autowired
     private TransacaoService transacaoService;
+
+    @Autowired
+    private AuthService authService;
 
     @GetMapping("/contas")
     public String listaContas(HttpSession session, Model model) {
-        Usuario correntista = (Usuario) session.getAttribute("usuarioLogado");
+        Usuario correntista = authService.getUsuarioLogado(session);
         List<Conta> listaContas = contaService.findByCorrentista(correntista);
         model.addAttribute("contas", listaContas);
+        model.addAttribute("nomeCorrentistaLogado", correntista.getNome());
         return "contas/lista";
     }
 
@@ -44,36 +49,38 @@ public class UsuarioController {
         return "contas/form";
     }
 
-    //Rota pra exibir o extrato da conta ne
+    // Rota pra exibir o extrato da conta ne
     @GetMapping("/contas/{id}")
-    public String extratoConta(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes){
+    public String extratoConta(@PathVariable("id") Long id, Model model, HttpSession session,
+            RedirectAttributes redirectAttributes) {
         Optional<Conta> optConta = contaService.findById(id);
-        if (optConta.isEmpty()){
-            redirectAttributes.addFlashAttribute("mensagemErro","Conta não encontrada!");
+        Usuario usuarioLogado = authService.getUsuarioLogado(session);
+        if (optConta.isEmpty()) {
+            redirectAttributes.addFlashAttribute("mensagemErro", "Conta não encontrada!");
             return "redirect:/contas";
         }
 
         Conta conta = optConta.get();
-        model.addAttribute("conta",conta);
-        model.addAttribute("transacoes",transacaoService.findByConta(conta));
+        model.addAttribute("conta", conta);
+        model.addAttribute("nomeCorrentistaLogado", usuarioLogado.getNome());
+        model.addAttribute("valorTotalGasto", optConta.get().calcularValorTotalGasto());
+        model.addAttribute("transacoes", transacaoService.findByConta(conta));
         return "contas/extrato";
     }
 
-
-
     @PostMapping("/contas")
-    public String addConta(HttpSession session, Conta conta, RedirectAttributes attr){
-        
-        if(contaService.contaJaExiste(conta.getNumero())){
+    public String addConta(HttpSession session, Conta conta, RedirectAttributes attr) {
+
+        if (contaService.contaJaExiste(conta.getNumero())) {
             attr.addFlashAttribute("mensagemContaInvalida", "Conta existente, digite outro número");
             return "redirect:/contas/nova";
         }
 
-        if(conta.getNumero() == null || conta.getNumero().trim().isEmpty()){
+        if (conta.getNumero() == null || conta.getNumero().trim().isEmpty()) {
             attr.addFlashAttribute("mensagemContaInvalida", "Número da conta obrigatório");
             return "redirect:/contas/nova";
         }
-        
+
         Usuario correntista = (Usuario) session.getAttribute("usuarioLogado");
         conta.setCorrentista(correntista);
         contaService.salvar(conta);
@@ -82,7 +89,7 @@ public class UsuarioController {
     }
 
     @PostMapping("contas/{id}/deletar")
-    public String deletarConta(@PathVariable("id") Long idConta){
+    public String deletarConta(@PathVariable("id") Long idConta) {
         contaService.deleteById(idConta);
         return "redirect:/contas";
     }

@@ -1,5 +1,6 @@
 package br.edu.ifpb.pweb2.dindin.model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -37,5 +38,14 @@ public class Conta {
         this.numero = numero;
         this.descricao = descricao;
         this.correntista = correntista;
+    }
+
+    public double calcularValorTotalGasto(){
+        BigDecimal sum = BigDecimal.ZERO;
+        for(Transacao trans : transacoes){
+            sum = sum.add(trans.getValor());
+        }
+
+        return sum.doubleValue();
     }
 }

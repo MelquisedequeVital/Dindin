@@ -54,4 +54,5 @@ public class Transacao {
         this.categoria = categoria;
         this.comentario = comentario;
     }
+
 }

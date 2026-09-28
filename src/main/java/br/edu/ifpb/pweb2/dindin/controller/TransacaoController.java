@@ -46,6 +46,7 @@ public class TransacaoController {
         return "transacoes/form";
     }
 
+// TODO: data não está aindo automaticamente
     @GetMapping("/editar/{id}")
     public String formEditarTransacao(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes){
         Optional<Transacao> optTransacao = transacaoService.findById(id);
