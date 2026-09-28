@@ -6,7 +6,6 @@
     <title>Adicionar Correntista</title>
 </head>
 <body>
-    <!--TODO: adicionar navegação e um verificador de admin para cair nessa pagina-->
     <form th:action="@{/admin/correntistas}" method="post" th:object="${correntista}">
         <label for="nome">Nome: </label>
         <input type="text" th:field="*{nome}"><br/><br/>

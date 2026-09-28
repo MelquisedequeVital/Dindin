@@ -28,10 +28,18 @@ public class ContaService {
         contaRepository.save(conta);
     }
 
-    public boolean contaJaExiste(Integer numero){
+    public boolean contaJaExiste(String numero){
         Optional<Conta> contaEncontrada = contaRepository.findByNumero(numero);
 
         return contaEncontrada.isPresent();
+    }
+
+    public List<Conta> findByCorrentistaId(Long id){
+        return contaRepository.findByCorrentistaId(id);
+    }
+
+    public void deleteById(Long id){
+        contaRepository.deleteById(id);
     }
 
 }

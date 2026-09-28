@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.edu.ifpb.pweb2.dindin.model.Conta;
@@ -61,7 +60,7 @@ public class UsuarioController {
     }
 
 
-    //TODO: adicionar verificação de conta
+
     @PostMapping("/contas")
     public String addConta(HttpSession session, Conta conta, RedirectAttributes attr){
         
@@ -70,7 +69,7 @@ public class UsuarioController {
             return "redirect:/contas/nova";
         }
 
-        if(conta.getNumero() == null){
+        if(conta.getNumero() == null || conta.getNumero().trim().isEmpty()){
             attr.addFlashAttribute("mensagemContaInvalida", "Número da conta obrigatório");
             return "redirect:/contas/nova";
         }
@@ -80,6 +79,12 @@ public class UsuarioController {
         contaService.salvar(conta);
         return "redirect:/contas";
 
+    }
+
+    @PostMapping("contas/{id}/deletar")
+    public String deletarConta(@PathVariable("id") Long idConta){
+        contaService.deleteById(idConta);
+        return "redirect:/contas";
     }
 
 }

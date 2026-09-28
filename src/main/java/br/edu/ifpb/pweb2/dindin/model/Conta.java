@@ -20,7 +20,7 @@ public class Conta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true, nullable = false) 
-    private Integer numero;
+    private String numero;
     private String descricao;
 
     @ManyToOne 
@@ -33,7 +33,7 @@ public class Conta {
     public Conta() {
     }
 
-    public Conta(Integer numero, String descricao, Usuario correntista) {
+    public Conta(String numero, String descricao, Usuario correntista) {
         this.numero = numero;
         this.descricao = descricao;
         this.correntista = correntista;

@@ -13,5 +13,7 @@ public interface ContaRepository extends JpaRepository<Conta, Long>{
 
     List<Conta> findByCorrentista(Usuario correntista);
 
-    Optional<Conta> findByNumero(Integer numero);
+    List<Conta> findByCorrentistaId(Long id);
+
+    Optional<Conta> findByNumero(String numero);
 }

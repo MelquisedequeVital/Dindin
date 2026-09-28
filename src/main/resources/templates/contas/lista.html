@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contas</title>
 </head>
+
 <body>
     <div style="display: flex; justify-content: space-around;">
-        <!--TODO: adicionar nome do correntista aqui-->
+        <!--TODO: adicionar nome do correntista aqui, um header-->
         <h1>Contas</h1>
         <button><a th:href="@{/contas/nova}">Adicionar Conta</a></button>
     </div>
@@ -22,8 +24,14 @@
             <tr th:each=" con : ${contas}">
                 <td><a th:text="${con.numero}" th:href="@{/contas/{id}(id=${con.id})}"></a></td>
                 <td th:text="${con.descricao}"></td>
+                <td>
+                    <form th:action="@{/contas/{id}/deletar(id=${con.id})}" th:method="post" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja deletar esta conta?');">
+                        <button type="submit">Deletar</button>
+                    </form>
+                </td>
             </tr>
         </tbody>
     </table>
 </body>
+
 </html>
