@@ -20,7 +20,7 @@
         </thead>
         <tbody>
             <tr th:each=" con : ${contas}">
-                <td th:text="${con.numero}"></td>
+                <td><a th:text="${con.numero}" th:href="@{/contas/{id}(id=${con.id})}"></a></td>
                 <td th:text="${con.descricao}"></td>
             </tr>
         </tbody>
