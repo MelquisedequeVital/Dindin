@@ -55,8 +55,10 @@ public class AdminController {
 
     @GetMapping("correntista/{id}/contas")
     public String acessarContadeCorrentista(@PathVariable("id") Long idCorrentista ,Model model){
+        Usuario usuarioVisualizado = usuarioService.findById(idCorrentista);
         List<Conta> listaContas = contaService.findByCorrentistaId(idCorrentista);
         model.addAttribute("contas", listaContas);
+        model.addAttribute("usuarioSendoVisualizado", usuarioVisualizado);
 
         return "contas/lista";
     }

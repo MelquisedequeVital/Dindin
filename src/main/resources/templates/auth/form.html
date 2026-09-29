@@ -3,148 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dindin - Acesso</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <title>Dindin - Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            purple: '#7C3AED', // Roxo principal sólido
-                            purpleHover: '#6D28D9',
-                            pinkLight: '#FCE7F3', // Rosa bem claro
-                            pinkText: '#DB2777'   // Rosa escuro
-                        }
-                    }
-                }
-            }
-        }
+        tailwind.config = { theme: { extend: { colors: { brand: { purple: '#7C3AED' } } } } }
     </script>
 </head>
-<body class="bg-pink-500 text-gray-800 antialiased font-sans min-h-screen flex flex-col">
-    
-    <!-- Navbar Simples -->
-    <header class="w-full flex justify-between items-center p-6 lg:px-12">
-        <div class="flex items-center gap-2 text-white">
-            <span class="material-symbols-outlined text-3xl">savings</span>
-            <span class="text-2xl font-bold tracking-tight">dindin</span>
+<body class="bg-pink-500 text-gray-800 font-sans min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded p-8 w-full max-w-sm flex flex-col items-center">
+        <div class="text-brand-purple mb-4 flex items-center gap-2">
+            <span class="material-symbols-outlined text-4xl">savings</span>
+            <span class="text-2xl font-bold">dindin</span>
         </div>
-        <div class="flex items-center gap-4">
-            <a th:href="@{/}" class="hidden sm:flex items-center gap-2 border border-white/30 text-white px-4 py-2 rounded-full hover:bg-white/10 transition text-sm">
-                <span class="material-symbols-outlined text-sm">arrow_back</span>
-                Voltar ao início
-            </a>
-            <!-- Removido: Botão Ajuda -->
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="flex-grow flex flex-col items-center justify-center p-4">
+        <h1 class="text-xl font-bold mb-4">Acesse sua conta</h1>
         
-        <!-- Card Formulário -->
-        <div class="bg-white rounded-[2rem] shadow-xl p-8 w-full max-w-md">
-            <!-- Icon -->
-            <div class="w-16 h-16 bg-brand-pinkLight rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <span class="material-symbols-outlined text-brand-pinkText text-3xl">savings</span>
+        <div th:if="${mensagemCredenciaisInvalidas != null and !mensagemCredenciaisInvalidas.isEmpty()}" class="w-full text-center bg-red-100 text-red-700 p-2 rounded mb-4 text-sm" th:text="${mensagemCredenciaisInvalidas}"></div>
+        
+        <form th:action="@{/login}" method="post" class="w-full flex flex-col gap-4">
+            <div>
+                <label for="username" class="block text-sm font-semibold mb-1">E-mail ou CPF</label>
+                <input type="text" id="username" name="username" required class="w-full border border-gray-300 rounded p-2 focus:border-brand-purple outline-none">
             </div>
-            
-            <h1 class="text-2xl font-bold text-center text-gray-900">Acesse sua conta</h1>
-            <p class="text-sm text-center text-gray-500 mt-2 mb-8">Gerencie suas finanças com simplicidade</p>
-            
-            <!-- Mensagem de Erro -->
-            <div th:if="${mensagemCredenciaisInvalidas != null and !mensagemCredenciaisInvalidas.isEmpty()}" class="bg-red-50 border border-red-200 text-red-600 rounded-xl p-3 mb-6 text-sm flex items-center gap-2">
-                <span class="material-symbols-outlined text-lg">error</span>
-                <span th:text="${mensagemCredenciaisInvalidas}">Credenciais inválidas</span>
+            <div>
+                <label for="senha" class="block text-sm font-semibold mb-1">Senha</label>
+                <input type="password" id="senha" name="senha" required class="w-full border border-gray-300 rounded p-2 focus:border-brand-purple outline-none">
             </div>
-
-            <!-- Form -->
-            <form th:action="@{/login}" method="post" class="space-y-5">
-                
-                <!-- Email / CPF -->
-                <div>
-                    <div class="flex justify-between items-center mb-1.5">
-                        <label for="username" class="text-sm font-semibold text-gray-700">E-mail ou CPF</label>
-                        <span class="text-[10px] font-bold text-brand-pinkText bg-brand-pinkLight px-2 py-0.5 rounded-full uppercase tracking-wider">Obrigatório</span>
-                    </div>
-                    <div class="relative">
-                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 select-none">person</span>
-                        <input type="text" id="username" name="username" required placeholder="seu@email.com ou CPF"
-                            class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-purple focus:border-brand-purple outline-none transition text-sm">
-                    </div>
-                </div>
-
-                <!-- Senha -->
-                <div>
-                    <div class="flex justify-between items-center mb-1.5">
-                        <label for="senha" class="text-sm font-semibold text-gray-700">Senha</label>
-                    </div>
-                    <div class="relative">
-                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 select-none">lock</span>
-                        <input type="password" id="senha" name="senha" required placeholder="••••••••"
-                            class="w-full pl-10 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-purple focus:border-brand-purple outline-none transition text-sm">
-                        <!-- Botão de Ver senha -->
-                        <button type="button" onclick="const p = document.getElementById('senha'); p.type = p.type === 'password' ? 'text' : 'password';" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none flex items-center">
-                            <span class="material-symbols-outlined text-lg">visibility</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Removido: Lembrar de mim e Esqueci a senha -->
-
-                <!-- Submit -->
-                <button type="submit" class="w-full bg-brand-purple hover:bg-brand-purpleHover text-white font-semibold py-3.5 rounded-xl transition flex items-center justify-center gap-2 mt-4">
-                    Entrar na conta
-                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                </button>
-
-                <!-- Divisor -->
-                <div class="flex items-center justify-center gap-4 py-2">
-                    <div class="h-px bg-gray-200 flex-grow"></div>
-                    <span class="text-xs font-semibold text-gray-400 tracking-widest uppercase">OU</span>
-                    <div class="h-px bg-gray-200 flex-grow"></div>
-                </div>
-
-                <!-- Cadastro -->
-                <div class="w-full text-center p-4 rounded-xl border border-pink-100 bg-brand-pinkLight">
-                    <span class="text-sm text-gray-600">Não tem uma conta? </span>
-                    <a th:href="@{/usuarios/form}" class="text-brand-purple font-semibold hover:underline">Cadastre-se</a>
-                </div>
-            </form>
+            <button type="submit" class="w-full bg-brand-purple text-white font-bold py-2 rounded hover:bg-purple-700">Entrar na conta</button>
+        </form>
+        
+        <div class="mt-4 text-sm">
+            <span>Não tem uma conta?</span>
+            <a th:href="@{/usuarios/form}" class="text-brand-purple font-bold underline">Cadastre-se</a>
         </div>
-
-        <!-- Badges abaixo do card -->
-        <div class="flex gap-4 mt-8 flex-wrap justify-center">
-            <div class="flex items-center gap-2 border border-white/20 text-white/90 text-sm px-4 py-1.5 rounded-full bg-white/10">
-                <span class="material-symbols-outlined text-sm">verified_user</span>
-                Dados 100% protegidos
-            </div>
-            <div class="flex items-center gap-2 border border-white/20 text-white/90 text-sm px-4 py-1.5 rounded-full bg-white/10">
-                <span class="material-symbols-outlined text-sm">speed</span>
-                Acesso rápido
-            </div>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="w-full bg-black/20 p-4 lg:px-12 flex flex-col sm:flex-row justify-between items-center text-xs text-white/80 gap-4 mt-auto">
-        <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-sm">lock</span>
-            Ambiente seguro com criptografia ponta a ponta
-        </div>
-        <div class="flex gap-6">
-            <a href="#" class="hover:text-white transition">Privacidade</a>
-            <a href="#" class="hover:text-white transition">Termos de Uso</a>
-            <a href="#" class="hover:text-white transition">Segurança</a>
-        </div>
-    </footer>
+    </div>
 </body>
 </html>

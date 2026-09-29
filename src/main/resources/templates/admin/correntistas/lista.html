@@ -2,113 +2,67 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dindin - Admin Correntistas</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
-                    colors: {
-                        brand: {
-                            purple: '#7C3AED',
-                            purpleHover: '#6D28D9',
-                            pinkLight: '#FCE7F3',
-                            pinkText: '#DB2777'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script>tailwind.config = { theme: { extend: { colors: { brand: { purple: '#7C3AED' } } } } }</script>
 </head>
-<body class="bg-[#FAFAFA] text-gray-800 antialiased font-sans min-h-screen flex flex-col">
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen">
 
-    <!-- Navbar Admin -->
-    <header class="w-full bg-gray-900 border-b border-gray-800 px-6 lg:px-12 py-4 flex justify-between items-center sticky top-0 z-50 shadow-md">
-        <div class="flex items-center gap-3 text-white">
-            <span class="material-symbols-outlined text-3xl text-brand-purple">admin_panel_settings</span>
-            <div class="flex flex-col">
-                <span class="text-xl font-extrabold tracking-tight leading-none">dindin</span>
-                <span class="text-[10px] text-gray-400 font-bold tracking-widest uppercase">Admin Panel</span>
-            </div>
+    <header class="bg-gray-900 border-b border-gray-800 p-4 flex justify-between items-center text-white">
+        <div class="flex items-center gap-2 font-bold text-xl">
+            <span class="material-symbols-outlined text-brand-purple">admin_panel_settings</span> dindin Admin
         </div>
-        
-        <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2 text-white/80 bg-gray-800 px-3 py-1.5 rounded-full text-sm">
-                <span class="material-symbols-outlined text-sm">shield_person</span>
-                <span class="font-semibold">Administrador</span>
-            </div>
+        <div class="flex items-center gap-4 text-sm font-semibold">
+            <a th:href="@{/contas}" class="hover:text-brand-purple underline">Minhas Contas</a>
+            <details class="relative inline-block text-left group">
+                <summary class="flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 text-brand-purple cursor-pointer list-none hover:bg-gray-200 transition">
+                    <span class="material-symbols-outlined text-sm">person</span>
+                    <span th:text="${session.usuarioLogado != null ? session.usuarioLogado.nome : 'Admin'}">Admin</span>
+                    <span class="material-symbols-outlined text-sm">arrow_drop_down</span>
+                </summary>
+                <div class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg border border-gray-200 z-50 overflow-hidden">
+                    <form th:action="@{/logout}" method="post" class="m-0">
+                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 font-semibold flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">logout</span> Sair
+                        </button>
+                    </form>
+                </div>
+            </details>
         </div>
     </header>
 
-    <main class="flex-grow w-full max-w-6xl mx-auto px-6 lg:px-12 py-10">
-        
-        <!-- Header -->
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-            <div>
-                <h1 class="text-3xl font-extrabold text-gray-900">Correntistas</h1>
-                <p class="text-sm text-gray-500 mt-1">Gerenciamento de usuários cadastrados no sistema.</p>
-            </div>
-            
-            <a th:href="@{/admin/correntistas/novo}" class="bg-brand-purple hover:bg-brand-purpleHover text-white font-semibold py-2.5 px-5 rounded-xl shadow-md transition flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm">person_add</span>
-                Adicionar Correntista
-            </a>
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold">Correntistas</h1>
+            <a th:href="@{/admin/correntistas/novo}" class="bg-brand-purple hover:bg-purple-700 text-white px-4 py-2 rounded font-bold text-sm">+ Novo Correntista</a>
         </div>
 
-        <!-- Tabela Estilizada -->
-        <div class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-gray-50 border-b border-gray-100 text-xs uppercase tracking-wider font-bold text-gray-500">
-                            <th class="px-6 py-4">Nome do Usuário</th>
-                            <th class="px-6 py-4">Login (E-mail)</th>
-                            <th class="px-6 py-4">Permissão</th>
-                            <th class="px-6 py-4 text-center">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 text-sm">
-                        <!-- Iteração -->
-                        <tr th:each="cor : ${correntistas}" class="hover:bg-gray-50/50 transition">
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-full bg-brand-pinkLight text-brand-pinkText flex items-center justify-center font-bold">
-                                        <span class="material-symbols-outlined text-sm">person</span>
-                                    </div>
-                                    <span class="font-bold text-gray-900" th:text="${cor.nome}">Nome</span>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 text-gray-600 font-medium" th:text="${cor.username}">email@email.com</td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs font-bold rounded-md uppercase tracking-wide border border-gray-200" th:text="${cor.role}">USER</span>
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                <a th:href="@{/admin/correntista/{id}/contas(id=${cor.id})}" class="inline-flex items-center gap-1 text-brand-purple hover:text-brand-purpleHover bg-brand-purple/10 hover:bg-brand-purple/20 px-3 py-1.5 rounded-lg font-semibold transition">
-                                    <span class="material-symbols-outlined text-sm">account_balance</span>
-                                    Ver Contas
-                                </a>
-                            </td>
-                        </tr>
-                        
-                        <tr th:if="${#lists.isEmpty(correntistas)}">
-                            <td colspan="4" class="px-6 py-12 text-center text-gray-500">
-                                <span class="material-symbols-outlined text-4xl mb-2 text-gray-300">group_off</span>
-                                <p>Nenhum correntista encontrado.</p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="bg-white border border-gray-300 rounded p-4 overflow-x-auto shadow-sm">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-100 border-b border-gray-300 text-sm">
+                        <th class="p-3">Nome</th>
+                        <th class="p-3">E-mail (Login)</th>
+                        <th class="p-3">Permissão</th>
+                        <th class="p-3">Ações</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm">
+                    <tr th:each="cor : ${correntistas}" class="border-b border-gray-200 hover:bg-gray-50">
+                        <td class="p-3 font-semibold" th:text="${cor.nome}">Nome</td>
+                        <td class="p-3" th:text="${cor.username}">email@email.com</td>
+                        <td class="p-3"><span class="bg-gray-200 px-2 py-1 rounded text-xs font-bold" th:text="${cor.role}">USER</span></td>
+                        <td class="p-3">
+                            <a th:href="@{/admin/correntista/{id}/contas(id=${cor.id})}" class="text-brand-purple hover:underline font-bold">Ver Contas</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(correntistas)}">
+                        <td colspan="4" class="p-4 text-center text-gray-500">Nenhum correntista encontrado.</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-
     </main>
 </body>
 </html>

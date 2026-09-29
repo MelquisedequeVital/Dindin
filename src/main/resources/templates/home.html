@@ -4,146 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dindin - Home</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            purple: '#7C3AED',
-                            purpleHover: '#6D28D9',
-                            pinkLight: '#FCE7F3',
-                            pinkText: '#DB2777'
-                        }
-                    }
-                }
-            }
-        }
+        tailwind.config = { theme: { extend: { colors: { brand: { purple: '#7C3AED' } } } } }
     </script>
 </head>
-<body class="bg-white text-gray-800 antialiased font-sans min-h-screen flex flex-col">
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col items-center justify-center p-6 text-center">
+    
+    <div class="text-brand-purple flex items-center gap-2 mb-6">
+        <span class="material-symbols-outlined text-5xl">savings</span>
+        <span class="text-4xl font-extrabold">dindin</span>
+    </div>
+    
+    <h1 class="text-3xl font-bold mb-4">Suas finanças em ordem</h1>
+    <p class="text-gray-600 mb-8 max-w-md">O jeito leve e simples de cuidar das suas contas. Sem complicação.</p>
+    
+    <div class="flex gap-4">
+        <a th:href="@{/login}" class="border border-brand-purple text-brand-purple font-bold py-2 px-6 rounded hover:bg-brand-purple hover:text-white transition">Entrar</a>
+        <a th:href="@{/cadastro}" class="bg-brand-purple text-white font-bold py-2 px-6 rounded hover:bg-purple-700 transition">Criar Conta</a>
+    </div>
 
-    <!-- Navbar -->
-    <header class="w-full flex justify-between items-center py-6 px-8 lg:px-24 border-b border-gray-100">
-        <div class="flex items-center gap-2 text-brand-purple">
-            <span class="material-symbols-outlined text-4xl">savings</span>
-            <span class="text-3xl font-extrabold tracking-tight text-gray-900">dindin</span>
-        </div>
-        
-        <!-- Links Originais Thymeleaf Embutidos na Navbar -->
-        <div class="flex items-center gap-4">
-            <a th:href="@{/login}" class="font-semibold text-gray-600 hover:text-brand-purple transition">
-                Entrar
-            </a>
-            <a th:href="@{/cadastro}" class="bg-brand-purple hover:bg-brand-purpleHover text-white font-semibold py-2.5 px-6 rounded-full shadow-md transition">
-                Criar Conta
-            </a>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <main class="flex-grow flex flex-col lg:flex-row items-center justify-between px-8 lg:px-24 py-12 gap-12">
-        
-        <!-- Left Text -->
-        <div class="lg:w-1/2 flex flex-col items-start text-left">
-            
-            <div class="flex items-center gap-2 bg-brand-pinkLight text-brand-pinkText font-bold text-xs px-4 py-1.5 rounded-full mb-6 tracking-widest uppercase">
-                <span class="w-2 h-2 rounded-full bg-brand-pinkText"></span>
-                Finanças Pessoais com Leveza
-            </div>
-            
-            <h1 class="text-5xl lg:text-7xl font-extrabold text-gray-900 leading-[1.1] mb-6">
-                Suas finanças em ordem, seu futuro em <span class="text-brand-purple relative">equilíbrio.</span>
-            </h1>
-            
-            <p class="text-lg lg:text-xl text-gray-600 mb-10 leading-relaxed max-w-xl">
-                O jeito leve, descomplicado e seguro de cuidar das suas contas e cartões com clareza total. Sem planilhas pesadas, sem complexidade: apenas paz mental para você conquistar seus sonhos.
-            </p>
-            
-            <!-- Botões / Links Originais Reutilizados -->
-            <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-                <a th:href="@{/cadastro}" class="w-full sm:w-auto bg-brand-purple hover:bg-brand-purpleHover text-white font-semibold py-4 px-8 rounded-full shadow-lg transition flex items-center justify-center gap-2 text-lg">
-                    Começar agora
-                    <span class="material-symbols-outlined">arrow_forward</span>
-                </a>
-                
-                <a th:href="@{/login}" class="w-full sm:w-auto border-2 border-gray-200 hover:border-brand-purple hover:text-brand-purple text-gray-700 font-semibold py-4 px-8 rounded-full transition flex items-center justify-center gap-2 text-lg bg-white">
-                    <span class="material-symbols-outlined">login</span>
-                    Acessar minha conta
-                </a>
-            </div>
-
-            <div class="flex items-center gap-6 mt-10 text-sm text-gray-500 font-medium">
-                <div class="flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-brand-purple text-base">verified_user</span>
-                    Criptografia de ponta a ponta
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-orange-400 text-base">star</span>
-                    Nota 4.9 nas lojas
-                </div>
-            </div>
-        </div>
-
-        <!-- Right Graphic / Piggy Bank (CSS Art Simplificada baseada na image.png) -->
-        <div class="lg:w-1/2 flex justify-center items-center relative mt-12 lg:mt-0">
-            <!-- Circulo Fundo -->
-            <div class="w-[400px] h-[400px] bg-brand-pinkLight rounded-full flex items-center justify-center relative shadow-inner">
-                
-                <!-- Caixa Roxa (Cofrinho) -->
-                <div class="w-48 h-48 bg-brand-purple rounded-3xl shadow-xl flex items-center justify-center relative z-10 transform hover:scale-105 transition duration-500">
-                    <span class="material-symbols-outlined text-white" style="font-size: 100px;">savings</span>
-                    <div class="absolute -bottom-4 bg-white text-brand-purple text-xs font-bold px-4 py-1 rounded-full shadow-md uppercase tracking-wider">
-                        Cofrinho Dindin
-                    </div>
-                </div>
-
-                <!-- Card Flutuante 1 (Economizado) -->
-                <div class="absolute -top-6 right-0 bg-white p-4 rounded-2xl shadow-xl flex items-center gap-4 hover:-translate-y-2 transition-transform duration-300">
-                    <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
-                        <span class="material-symbols-outlined">trending_up</span>
-                    </div>
-                    <div>
-                        <p class="text-xs text-gray-500 font-bold uppercase">Total Economizado</p>
-                        <p class="text-xl font-extrabold text-gray-900">+R$ 2.450,00</p>
-                    </div>
-                </div>
-
-                <!-- Card Flutuante 2 (Meta) -->
-                <div class="absolute -bottom-10 left-0 bg-white p-4 rounded-2xl shadow-xl flex items-center gap-4 hover:-translate-y-2 transition-transform duration-300">
-                    <div class="w-12 h-12 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center">
-                        <span class="material-symbols-outlined">check_circle</span>
-                    </div>
-                    <div>
-                        <p class="text-xs text-gray-500 font-bold uppercase">Meta do mês</p>
-                        <p class="text-xl font-extrabold text-gray-900">100% Concluída 🎉</p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="w-full border-t border-gray-100 p-6 lg:px-24 flex flex-col sm:flex-row justify-between items-center text-sm text-gray-500 gap-4 mt-auto bg-gray-50">
-        <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-base">shield</span>
-            © 2026 Dindin. Gestão financeira inteligente, segura e descomplicada.
-        </div>
-        <div class="flex gap-6 font-medium">
-            <a href="#" class="hover:text-brand-purple transition">Termos</a>
-            <a href="#" class="hover:text-brand-purple transition">Privacidade</a>
-            <a href="#" class="hover:text-brand-purple transition">Central de Ajuda</a>
-        </div>
-    </footer>
 </body>
 </html>

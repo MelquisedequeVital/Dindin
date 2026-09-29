@@ -44,8 +44,11 @@ public class UsuarioController {
     }
 
     @GetMapping("/contas/nova")
-    public String contaForm(Model model) {
+    public String contaForm(HttpSession session, Model model) {
+        Usuario correntista = authService.getUsuarioLogado(session);
         model.addAttribute("conta", new Conta());
+        model.addAttribute("nomeCorrentistaLogado", correntista.getNome());
+        model.addAttribute("isAdmin", correntista.isAdmin());
         return "contas/form";
     }
 
@@ -56,13 +59,14 @@ public class UsuarioController {
         Optional<Conta> optConta = contaService.findById(id);
         Usuario usuarioLogado = authService.getUsuarioLogado(session);
         if (optConta.isEmpty()) {
-            redirectAttributes.addFlashAttribute("mensagemErro", "Conta não encontrada!");
+            redirectAttributes.addFlashAttribute("mensagemErro", "Conta nǜo encontrada!");
             return "redirect:/contas";
         }
 
         Conta conta = optConta.get();
         model.addAttribute("conta", conta);
         model.addAttribute("nomeCorrentistaLogado", usuarioLogado.getNome());
+        model.addAttribute("isAdmin", usuarioLogado.isAdmin());
         model.addAttribute("valorTotalGasto", optConta.get().calcularValorTotalGasto());
         model.addAttribute("transacoes", transacaoService.findByConta(conta));
         return "contas/extrato";
