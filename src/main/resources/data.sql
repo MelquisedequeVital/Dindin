@@ -1,17 +1,17 @@
 -- 1. USUARIOS (10 registros)
 INSERT INTO usuario (id, nome, username, senha, role, bloqueado) VALUES
-(1, 'Melquisedeque Vital', 'melquisedeque@gmail.com', '$2a$12$B3d0BucBwBSsqsdnZA4AVeCQfNfroU49nfrXYERcuH/n1Ale96yxa', 'ROLE_ADMINISTRADOR', false),
-(2, 'Mariana Ludmilla', 'ludmilla@gmail.com', '$2a$12$B3d0BucBwBSsqsdnZA4AVeCQfNfroU49nfrXYERcuH/n1Ale96yxa', 'ROLE_ADMINISTRADOR', false),
-(3, 'Fred', 'fred@gmail.com', '$2a$12$B3d0BucBwBSsqsdnZA4AVeCQfNfroU49nfrXYERcuH/n1Ale96yxa', 'ROLE_CORRENTISTA', false),
-(4, 'Victor', 'victor@gmail.com', '$2a$12$B3d0BucBwBSsqsdnZA4AVeCQfNfroU49nfrXYERcuH/n1Ale96yxa', 'ROLE_CORRENTISTA', false),
-(5, 'Cauê', 'caue@gmail.com', '$2a$12$B3d0BucBwBSsqsdnZA4AVeCQfNfroU49nfrXYERcuH/n1Ale96yxa', 'ROLE_CORRENTISTA', false),
-(6, 'Rogério', 'rogerio@gmail.com', '$2a$12$B3d0BucBwBSsqsdnZA4AVeCQfNfroU49nfrXYERcuH/n1Ale96yxa', 'ROLE_CORRENTISTA', false),
-(7, 'Mikael', 'mikael@gmail.com', '$2a$12$B3d0BucBwBSsqsdnZA4AVeCQfNfroU49nfrXYERcuH/n1Ale96yxa', 'ROLE_CORRENTISTA', false),
-(8, 'Murilo', 'murilo@gmail.com', '$2a$12$B3d0BucBwBSsqsdnZA4AVeCQfNfroU49nfrXYERcuH/n1Ale96yxa', 'ROLE_CORRENTISTA', false),
-(9, 'Felipe', 'felipe@gmail.com', '$2a$12$B3d0BucBwBSsqsdnZA4AVeCQfNfroU49nfrXYERcuH/n1Ale96yxa', 'ROLE_CORRENTISTA', false),
-(10, 'Nabucodonosor', 'nabucodonosor@gmail.com', '$2a$12$B3d0BucBwBSsqsdnZA4AVeCQfNfroU49nfrXYERcuH/n1Ale96yxa', 'ROLE_CORRENTISTA', true)
+(1, 'Melquisedeque Vital', 'melquisedeque@gmail.com', '$2a$12$otXSj0SovAxN8w49wtjKse.ExE.8OSXQmP1ye8/6RAVs3SYXPnCJ2', 'ROLE_ADMINISTRADOR', false),
+(2, 'Mariana Ludmilla', 'ludmilla@gmail.com', '$2a$12$otXSj0SovAxN8w49wtjKse.ExE.8OSXQmP1ye8/6RAVs3SYXPnCJ2', 'ROLE_ADMINISTRADOR', false),
+(3, 'Fred', 'fred@gmail.com', '$2a$12$otXSj0SovAxN8w49wtjKse.ExE.8OSXQmP1ye8/6RAVs3SYXPnCJ2', 'ROLE_CORRENTISTA', false),
+(4, 'Victor', 'victor@gmail.com', '$2a$12$otXSj0SovAxN8w49wtjKse.ExE.8OSXQmP1ye8/6RAVs3SYXPnCJ2', 'ROLE_CORRENTISTA', false),
+(5, 'Cauê', 'caue@gmail.com', '$2a$12$otXSj0SovAxN8w49wtjKse.ExE.8OSXQmP1ye8/6RAVs3SYXPnCJ2', 'ROLE_CORRENTISTA', false),
+(6, 'Rogério', 'rogerio@gmail.com', '$2a$12$otXSj0SovAxN8w49wtjKse.ExE.8OSXQmP1ye8/6RAVs3SYXPnCJ2', 'ROLE_CORRENTISTA', false),
+(7, 'Mikael', 'mikael@gmail.com', '$2a$12$otXSj0SovAxN8w49wtjKse.ExE.8OSXQmP1ye8/6RAVs3SYXPnCJ2', 'ROLE_CORRENTISTA', false),
+(8, 'Murilo', 'murilo@gmail.com', '$2a$12$otXSj0SovAxN8w49wtjKse.ExE.8OSXQmP1ye8/6RAVs3SYXPnCJ2', 'ROLE_CORRENTISTA', false),
+(9, 'Felipe', 'felipe@gmail.com', '$2a$12$otXSj0SovAxN8w49wtjKse.ExE.8OSXQmP1ye8/6RAVs3SYXPnCJ2', 'ROLE_CORRENTISTA', false),
+(10, 'Nabucodonosor', 'nabucodonosor@gmail.com', '$2a$12$otXSj0SovAxN8w49wtjKse.ExE.8OSXQmP1ye8/6RAVs3SYXPnCJ2', 'ROLE_CORRENTISTA', true)
 ON CONFLICT (id) DO NOTHING;
--- A senha de todos os utilizadores é 123456
+-- A senha de todos os utilizadores é ifpb
 
 -- 2. CATEGORIAS (Conforme a especificação do documento)
 INSERT INTO categoria (id, nome, natureza, ativo, ordem) VALUES
