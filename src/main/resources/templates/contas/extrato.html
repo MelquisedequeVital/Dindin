@@ -60,6 +60,7 @@
                         <th class="p-3 font-semibold">Ações</th>
                     </tr>
                 </thead>
+                <!--TODO: adicionar tipo de movimento na vizualização-->
                 <tbody class="text-sm">
                     <tr th:each="t : ${transacoes}" class="border-b border-gray-200 hover:bg-gray-50">
                         <td class="p-3" th:text="${#temporals.format(t.data, 'dd/MM/yyyy')}">01/01</td>
