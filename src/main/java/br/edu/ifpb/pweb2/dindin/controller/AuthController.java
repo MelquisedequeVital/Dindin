@@ -61,7 +61,7 @@ public class AuthController {
             session.invalidate();
         }
 
-        attr.addAttribute("mensagemLogout", "Você deslogou com sucesso");
+        attr.addFlashAttribute("mensagemLogout", "Você deslogou com sucesso");
         return "redirect:/";
     }
 }
