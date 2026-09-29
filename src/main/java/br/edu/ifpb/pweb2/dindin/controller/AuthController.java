@@ -64,4 +64,21 @@ public class AuthController {
         attr.addFlashAttribute("mensagemLogout", "Você deslogou com sucesso");
         return "redirect:/";
     }
+
+    @GetMapping("/cadastro")
+    public String getCadastroForm(Usuario usuario){
+        return "auth/cadastro";
+    }
+
+    @PostMapping("/cadastro")
+    public String cadastrar(Usuario usuario, RedirectAttributes redirectAttributes){
+        if(usuarioService.usuarioJaExiste(usuario.getUsername())) {
+            redirectAttributes.addFlashAttribute("mensagemErro","Esse email já está em uso.");
+            return "redirect:cadastro";
+        }
+
+        usuarioService.cadastrar(usuario);
+        redirectAttributes.addFlashAttribute("mensagemSucesso","Cadastro realizado com sucesso!");
+        return "redirect:/login";
+    }
 }

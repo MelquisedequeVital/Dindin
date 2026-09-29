@@ -10,31 +10,40 @@
         tailwind.config = { theme: { extend: { colors: { brand: { purple: '#7C3AED' } } } } }
     </script>
 </head>
-<body class="bg-pink-500 text-gray-800 font-sans min-h-screen flex items-center justify-center p-4">
-    <div class="bg-white rounded p-8 w-full max-w-sm flex flex-col items-center">
-        <div class="text-brand-purple mb-4 flex items-center gap-2">
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col items-center justify-center p-6">
+
+    <div class="max-w-md w-full bg-white p-8 rounded-xl shadow-md border border-gray-100r">
+
+        <div class="text-brand-purple flex items-center justify-center gap-2 mb-6">
             <span class="material-symbols-outlined text-4xl">savings</span>
-            <span class="text-2xl font-bold">dindin</span>
+            <span class="text-3xl font-bold">dindin</span>
         </div>
-        <h1 class="text-xl font-bold mb-4">Acesse sua conta</h1>
+
+        <div th:if="${mensagemSucesso}" 
+            class="w-full text-center bg-green-100 border border-green-400 text-green-700 p-3 rounded-lg mb-4 text-sm font-medium">
+            <span th:text="${mensagemSucesso}"></span>
+        </div>
+
+        <h1 class="text-2xl font-bold text-center text-gray-800 mb-2">Acesse sua conta</h1>
         
         <div th:if="${mensagemCredenciaisInvalidas != null and !mensagemCredenciaisInvalidas.isEmpty()}" class="w-full text-center bg-red-100 text-red-700 p-2 rounded mb-4 text-sm" th:text="${mensagemCredenciaisInvalidas}"></div>
         
-        <form th:action="@{/login}" method="post" class="w-full flex flex-col gap-4">
+        <form th:action="@{/login}" method="post" class="w-full flex flex-col gap-4 space-y-4">
             <div>
-                <label for="username" class="block text-sm font-semibold mb-1">E-mail ou CPF</label>
-                <input type="text" id="username" name="username" required class="w-full border border-gray-300 rounded p-2 focus:border-brand-purple outline-none">
+                <label for="username" class="block text-sm font-medium text-gray-700 mb-1">E-mail ou CPF</label>
+                <input type="text" id="username" name="username" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-purple focus:outline-none">
             </div>
             <div>
-                <label for="senha" class="block text-sm font-semibold mb-1">Senha</label>
-                <input type="password" id="senha" name="senha" required class="w-full border border-gray-300 rounded p-2 focus:border-brand-purple outline-none">
+                <label for="senha" class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+                <input type="password" id="senha" name="senha" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-purple focus:outline-none"
+                placeholder="••••••••">
             </div>
-            <button type="submit" class="w-full bg-brand-purple text-white font-bold py-2 rounded hover:bg-purple-700">Entrar na conta</button>
+            <button type="submit" class="w-full bg-brand-purple text-white font-bold py-2.5 rounded-lg hover:bg-purple-700 transition">Entrar na conta</button>
         </form>
         
-        <div class="mt-4 text-sm">
+        <div class="mt-6 text-center text-sm text-gray-600">
             <span>Não tem uma conta?</span>
-            <a th:href="@{/usuarios/form}" class="text-brand-purple font-bold underline">Cadastre-se</a>
+            <a th:href="@{/cadastro}" class="text-brand-purple font-bold underline">Cadastre-se</a>
         </div>
     </div>
 </body>

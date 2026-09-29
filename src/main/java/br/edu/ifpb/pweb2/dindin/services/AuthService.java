@@ -17,14 +17,14 @@ public class AuthService {
 
     private final UsuarioRepository usuarioRepository;
 
-    AuthService(UsuarioRepository usuarioRepository) {
+    public AuthService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
 
     public Optional<Usuario> autenticarUsuario(String username, String senha) {
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findByUsername(username);
-        //TODO: alterar quando tiver cadastro: PasswordUtil.checkPass(senha, usuarioEncontrado.get().getSenha())
-        if (usuarioEncontrado.isPresent() && usuarioEncontrado.get().getSenha().equals(senha)) {
+        //se usuario existir e senha for igual à salva anteriormente
+        if (usuarioEncontrado.isPresent() && PasswordUtil.checkPass(senha, usuarioEncontrado.get().getSenha())) {
             return usuarioEncontrado;
         }
 

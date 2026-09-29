@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ifpb.pweb2.dindin.model.Conta;
 import br.edu.ifpb.pweb2.dindin.model.Usuario;
+import br.edu.ifpb.pweb2.dindin.model.enums.Role;
 import br.edu.ifpb.pweb2.dindin.repository.UsuarioRepository;
+import br.edu.ifpb.pweb2.dindin.util.PasswordUtil;
 
 
 @Service
@@ -39,6 +41,15 @@ public class UsuarioService {
 
     public Usuario findById(Long id){
         return usuarioRepository.findById(id).get();
+    }
+
+    public void cadastrar(Usuario usuario){
+        String senhaHash = PasswordUtil.hashPassword(usuario.getSenha());
+        usuario.setSenha(senhaHash);
+        usuario.setBloqueado(false);
+        usuario.setRole(Role.ROLE_CORRENTISTA);
+
+        usuarioRepository.save(usuario);
     }
 
 }
