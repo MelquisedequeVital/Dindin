@@ -67,8 +67,9 @@ public class UsuarioController {
         model.addAttribute("conta", conta);
         model.addAttribute("nomeCorrentistaLogado", usuarioLogado.getNome());
         model.addAttribute("isAdmin", usuarioLogado.isAdmin());
-        model.addAttribute("valorTotalGasto", optConta.get().calcularValorTotalGasto());
+        model.addAttribute("valorTotalGasto", optConta.get().getSaldoLíquido());
         model.addAttribute("transacoes", transacaoService.findByConta(conta));
+        model.addAttribute("valorInvestido", optConta.get().getValorTotalInvestido());
         return "contas/extrato";
     }
 

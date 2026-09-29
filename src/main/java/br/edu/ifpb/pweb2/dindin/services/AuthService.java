@@ -13,8 +13,6 @@ import br.edu.ifpb.pweb2.dindin.model.Usuario;
 @Service
 public class AuthService {
 
-    //TODO: adicionar interceptador e hash de senha
-
     private final UsuarioRepository usuarioRepository;
 
     public AuthService(UsuarioRepository usuarioRepository) {
@@ -23,7 +21,6 @@ public class AuthService {
 
     public Optional<Usuario> autenticarUsuario(String username, String senha) {
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findByUsername(username);
-        //se usuario existir e senha for igual à salva anteriormente
         if (usuarioEncontrado.isPresent() && PasswordUtil.checkPass(senha, usuarioEncontrado.get().getSenha())) {
             return usuarioEncontrado;
         }

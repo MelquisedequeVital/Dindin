@@ -34,4 +34,6 @@ public class TransacaoService {
     public void excluir(Long id) {
         transacaoRepository.deleteById(id);
     }
+
+    
 }

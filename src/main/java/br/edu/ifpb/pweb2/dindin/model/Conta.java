@@ -14,21 +14,21 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 
-@Entity 
-@Data 
+@Entity
+@Data
 public class Conta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true, nullable = false) 
+    @Column(unique = true, nullable = false)
     private String numero;
     private String descricao;
 
-    @ManyToOne 
-    @JoinColumn(name = "correntista_id") 
+    @ManyToOne
+    @JoinColumn(name = "correntista_id")
     private Usuario correntista;
 
-    @OneToMany(mappedBy = "conta", cascade = CascadeType.ALL) 
+    @OneToMany(mappedBy = "conta", cascade = CascadeType.ALL)
     private List<Transacao> transacoes;
 
     public Conta() {
@@ -40,12 +40,23 @@ public class Conta {
         this.correntista = correntista;
     }
 
-    public double calcularValorTotalGasto(){
-        BigDecimal sum = BigDecimal.ZERO;
-        for(Transacao trans : transacoes){
-            sum = sum.add(trans.getValor());
-        }
+    public double getSaldoLíquido() {
+        if (transacoes == null)
+            return 0.0;
 
-        return sum.doubleValue();
+        return transacoes.stream()
+                .map(Transacao::getImpactoNoSaldo)
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .doubleValue();
+    }
+
+    public double getValorTotalInvestido() {
+        if (transacoes == null)
+            return 0.0;
+
+        return transacoes.stream()
+                .map(Transacao::getValorInvestimento)
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .doubleValue();
     }
 }

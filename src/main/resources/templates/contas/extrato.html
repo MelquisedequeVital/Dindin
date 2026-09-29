@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Dindin - Extrato</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
     <script>tailwind.config = { theme: { extend: { colors: { brand: { purple: '#7C3AED' } } } } }</script>
 </head>
+
 <body class="bg-gray-100 text-gray-800 font-sans min-h-screen">
 
     <header class="bg-white border-b border-gray-300 p-4 flex justify-between items-center">
@@ -15,16 +18,21 @@
         </div>
         <div class="flex items-center gap-4 text-sm font-semibold">
             <a th:href="@{/contas}" class="hover:text-brand-purple">Minhas Contas</a>
-            <a th:if="${isAdmin != null and isAdmin}" th:href="@{/admin/correntistas}" class="hover:text-brand-purple underline">Painel Admin</a>
+            <a th:if="${isAdmin != null and isAdmin}" th:href="@{/admin/correntistas}"
+                class="hover:text-brand-purple underline">Painel Admin</a>
             <details class="relative inline-block text-left group">
-                <summary class="flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 text-brand-purple cursor-pointer list-none hover:bg-gray-200 transition">
+                <summary
+                    class="flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 text-brand-purple cursor-pointer list-none hover:bg-gray-200 transition">
                     <span class="material-symbols-outlined text-sm">person</span>
-                    <span th:text="${nomeCorrentistaLogado != null ? nomeCorrentistaLogado : (session.usuarioLogado != null ? session.usuarioLogado.nome : 'Usuário')}">Usuário</span>
+                    <span
+                        th:text="${nomeCorrentistaLogado != null ? nomeCorrentistaLogado : (session.usuarioLogado != null ? session.usuarioLogado.nome : 'Usuário')}">Usuário</span>
                     <span class="material-symbols-outlined text-sm">arrow_drop_down</span>
                 </summary>
-                <div class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg border border-gray-200 z-50 overflow-hidden">
+                <div
+                    class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg border border-gray-200 z-50 overflow-hidden">
                     <form th:action="@{/logout}" method="post" class="m-0">
-                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 font-semibold flex items-center gap-2">
+                        <button type="submit"
+                            class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 font-semibold flex items-center gap-2">
                             <span class="material-symbols-outlined text-sm">logout</span> Sair
                         </button>
                     </form>
@@ -34,18 +42,41 @@
     </header>
 
     <main class="max-w-5xl mx-auto p-6">
-        <a th:href="@{/contas}" class="text-brand-purple underline text-sm mb-4 inline-block">&larr; Voltar para Minhas Contas</a>
-        
-        <div th:if="${mensagemSucesso}" class="bg-green-100 text-green-700 p-2 rounded mb-4 text-sm" th:text="${mensagemSucesso}"></div>
-        <div th:if="${mensagemErro}" class="bg-red-100 text-red-700 p-2 rounded mb-4 text-sm" th:text="${mensagemErro}"></div>
+        <a th:href="@{/contas}" class="text-brand-purple underline text-sm mb-4 inline-block">&larr; Voltar para Minhas
+            Contas</a>
+
+        <div th:if="${mensagemSucesso}" class="bg-green-100 text-green-700 p-2 rounded mb-4 text-sm"
+            th:text="${mensagemSucesso}"></div>
+        <div th:if="${mensagemErro}" class="bg-red-100 text-red-700 p-2 rounded mb-4 text-sm" th:text="${mensagemErro}">
+        </div>
 
         <div class="flex justify-between items-center mb-6">
             <div>
                 <h1 class="text-2xl font-bold">Extrato</h1>
-                <p class="text-gray-600" th:text="${conta.descricao != null ? conta.descricao : 'Conta'} + ' - ' + ${conta.numero}">Banco - 0000</p>
-                <p class="font-bold text-brand-purple mt-1">Total gasto: <span th:text="${valorTotalGasto != null ? 'R$ ' + #numbers.formatDecimal(valorTotalGasto, 1, 'POINT', 2, 'COMMA') : 'R$ ---'}"></span></p>
+                <p class="text-gray-600"
+                    th:text="${conta.descricao != null ? conta.descricao : 'Conta'} + ' - ' + ${conta.numero}">Banco -
+                    0000</p>
+
+                <p class="font-bold mt-1"
+                    th:classappend="${(valorTotalGasto != null ? valorTotalGasto : conta.calcularValorTotalGasto()) > 0 ? 'text-green-600' : 
+                    ((valorTotalGasto != null ? valorTotalGasto : conta.calcularValorTotalGasto()) < 0 ? 'text-red-500' : 'text-gray-500')}">
+                    Total Líquido:
+                    <span
+                        th:text="${valorTotalGasto != null ? 'R$ ' + #numbers.formatDecimal(valorTotalGasto, 1, 'POINT', 2, 'COMMA') : 'R$ ' + #numbers.formatDecimal(conta.calcularValorTotalGasto(), 1, 'POINT', 2, 'COMMA')}">R$
+                        0,00</span>
+                </p>
+
+                <p class="font-bold mt-1"
+                    th:classappend="${(valorInvestido != null ? valorInvestido : conta.getValorInvestido()) > 0 ? 'text-amber-500' : 'text-gray-500'}">
+                    Total Investido:
+                    <span
+                        th:text="${valorInvestido != null ? 'R$ ' + #numbers.formatDecimal(valorInvestido, 1, 'POINT', 2, 'COMMA') : 'R$ ' + #numbers.formatDecimal(conta.getValorInvestido(), 1, 'POINT', 2, 'COMMA')}">R$
+                        0,00</span>
+                </p>
+                
             </div>
-            <a th:href="@{/transacoes/nova/{contaId}(contaId=${conta.id})}" class="bg-brand-purple text-white px-4 py-2 rounded font-bold text-sm">+ Nova Transação</a>
+            <a th:href="@{/transacoes/nova/{contaId}(contaId=${conta.id})}"
+                class="bg-brand-purple text-white px-4 py-2 rounded font-bold text-sm">+ Nova Transação</a>
         </div>
 
         <div class="bg-white border border-gray-300 rounded overflow-x-auto p-4">
@@ -54,6 +85,7 @@
                     <tr class="bg-gray-100 border-b border-gray-300 text-sm">
                         <th class="p-3 font-semibold">Data</th>
                         <th class="p-3 font-semibold">Descrição</th>
+                        <th class="p-3 font-semibold">Tipo</th>
                         <th class="p-3 font-semibold">Categoria</th>
                         <th class="p-3 font-semibold">Valor</th>
                         <th class="p-3 font-semibold">Comentários</th>
@@ -65,33 +97,44 @@
                     <tr th:each="t : ${transacoes}" class="border-b border-gray-200 hover:bg-gray-50">
                         <td class="p-3" th:text="${#temporals.format(t.data, 'dd/MM/yyyy')}">01/01</td>
                         <td class="p-3 font-semibold" th:text="${t.descricao}">Desc</td>
+                        <td class="p-3 font-semibold" th:text="${t.movimento}">Tipo</td>
                         <td class="p-3" th:text="${t.categoria != null ? t.categoria.nome : 'Sem Categoria'}">Cat</td>
-                        <td class="p-3 font-bold" th:classappend="${t.valor < 0 ? 'text-red-500' : 'text-green-600'}" th:text="${'R$ ' + #numbers.formatDecimal(t.valor, 1, 'POINT', 2, 'COMMA')}">R$ 0</td>
-                        
+                        <td class="p-3 font-bold" th:classappend="${t.categoria?.natureza?.classeCor}"
+                            th:text="${'R$ ' + #numbers.formatDecimal(t.valor, 1, 'POINT', 2, 'COMMA')}">
+                            R$ 0,00
+                        </td>
+
                         <td class="p-3">
                             <div th:if="${t.comentario != null}" class="flex items-center gap-1">
                                 <form th:action="@{/comentarios/salvar}" method="post" class="flex gap-1">
                                     <input type="hidden" name="transacaoId" th:value="${t.id}">
                                     <input type="hidden" name="contaId" th:value="${conta.id}">
-                                    <input type="text" name="texto" th:value="${t.comentario.texto}" required class="border border-gray-300 p-1 rounded text-xs w-32">
-                                    <button type="submit" class="bg-brand-purple text-white px-2 py-1 rounded text-xs">Salvar</button>
+                                    <input type="text" name="texto" th:value="${t.comentario.texto}" required
+                                        class="border border-gray-300 p-1 rounded text-xs w-32">
+                                    <button type="submit"
+                                        class="bg-brand-purple text-white px-2 py-1 rounded text-xs">Salvar</button>
                                 </form>
-                                <form th:action="@{/comentarios/remover/{transacaoId}(transacaoId=${t.id})}" method="post">
+                                <form th:action="@{/comentarios/remover/{transacaoId}(transacaoId=${t.id})}"
+                                    method="post">
                                     <input type="hidden" name="contaId" th:value="${conta.id}">
-                                    <button type="submit" onclick="return confirm('Remover?')" class="bg-red-500 text-white px-2 py-1 rounded text-xs">Excluir</button>
+                                    <button type="submit" onclick="return confirm('Remover?')"
+                                        class="bg-red-500 text-white px-2 py-1 rounded text-xs">Excluir</button>
                                 </form>
                             </div>
                             <div th:if="${t.comentario == null}">
                                 <form th:action="@{/comentarios/salvar}" method="post" class="flex items-center gap-1">
                                     <input type="hidden" name="transacaoId" th:value="${t.id}">
                                     <input type="hidden" name="contaId" th:value="${conta.id}">
-                                    <input type="text" name="texto" placeholder="Novo..." required class="border border-gray-300 p-1 rounded text-xs w-32">
-                                    <button type="submit" class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs">Add</button>
+                                    <input type="text" name="texto" placeholder="Novo..." required
+                                        class="border border-gray-300 p-1 rounded text-xs w-32">
+                                    <button type="submit"
+                                        class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs">Add</button>
                                 </form>
                             </div>
                         </td>
                         <td class="p-3">
-                            <a th:href="@{/transacoes/editar/{id}(id=${t.id})}" class="text-blue-600 hover:underline text-xs">Editar</a>
+                            <a th:href="@{/transacoes/editar/{id}(id=${t.id})}"
+                                class="text-blue-600 hover:underline text-xs">Editar</a>
                         </td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(transacoes)}">
@@ -102,4 +145,5 @@
         </div>
     </main>
 </body>
+
 </html>

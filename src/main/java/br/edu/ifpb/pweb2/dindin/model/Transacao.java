@@ -1,5 +1,6 @@
 package br.edu.ifpb.pweb2.dindin.model;
 
+import br.edu.ifpb.pweb2.dindin.model.enums.Natureza;
 import br.edu.ifpb.pweb2.dindin.model.enums.TipoTransacao;
 import jakarta.annotation.Generated;
 import jakarta.persistence.CascadeType;
@@ -19,22 +20,22 @@ import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-@Entity 
-@Data 
+@Entity
+@Data
 public class Transacao {
-    @Id 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate data;
     private String descricao;
     private BigDecimal valor;
-    
+
     @Enumerated(EnumType.STRING)
     private TipoTransacao movimento;
 
-    @ManyToOne 
+    @ManyToOne
     @JoinColumn(name = "conta_id")
     private Conta conta;
 
@@ -42,14 +43,15 @@ public class Transacao {
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 
-    @OneToOne(cascade = CascadeType.ALL) 
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "comentario_id", nullable = true)
     private Comentario comentario;
 
     public Transacao() {
     }
 
-    public Transacao(LocalDate data, String descricao, BigDecimal valor, TipoTransacao movimento, Conta conta, Categoria categoria, Comentario comentario) {
+    public Transacao(LocalDate data, String descricao, BigDecimal valor, TipoTransacao movimento, Conta conta,
+            Categoria categoria, Comentario comentario) {
         this.data = data;
         this.descricao = descricao;
         this.valor = valor;
@@ -57,6 +59,29 @@ public class Transacao {
         this.conta = conta;
         this.categoria = categoria;
         this.comentario = comentario;
+    }
+
+    public BigDecimal getImpactoNoSaldo() {
+        if (this.valor == null || this.categoria == null || this.categoria.getNatureza() == null) {
+            return BigDecimal.ZERO;
+        }
+
+        return switch (this.categoria.getNatureza()) {
+            case ENTRADA -> this.valor;
+            case SAIDA -> this.valor.negate();
+            case INVESTIMENTO -> BigDecimal.ZERO;
+        };
+    }
+
+    public BigDecimal getValorInvestimento() {
+        if (isInvestimento() && this.valor != null) {
+            return this.valor;
+        }
+        return BigDecimal.ZERO;
+    }
+
+    public boolean isInvestimento() {
+        return this.categoria != null && this.categoria.getNatureza() == Natureza.INVESTIMENTO;
     }
 
 }

@@ -25,6 +25,7 @@ public class Categoria {
     //usuário administrador pode cadastrar novas ou mesmo desativar uma das predefinidas (apenas o
     //administrador!).
     private Boolean ativo = true;
+    private Integer ordem;
 
     public Categoria() {
     }
