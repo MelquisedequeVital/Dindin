@@ -35,4 +35,8 @@ public abstract class Natureza {
         return this.movimento;
     }
 
+    public BigDecimal calcularValorInvestido(BigDecimal valor){
+        return BigDecimal.ZERO;
+    }
+
 }

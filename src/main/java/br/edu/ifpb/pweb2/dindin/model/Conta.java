@@ -54,4 +54,18 @@ public class Conta {
         return valorTotal;
     }
 
+    public BigDecimal calcularTotalInvestido() {
+        BigDecimal valorTotalInvestido = BigDecimal.ZERO;
+
+        if (this.transacoes == null || this.transacoes.isEmpty()) {
+            return BigDecimal.ZERO;
+        }
+
+        for (Transacao trans : this.transacoes) {
+            valorTotalInvestido = valorTotalInvestido.add(trans.getValorInvestido());
+        }
+
+        return valorTotalInvestido;
+    }
+
 }

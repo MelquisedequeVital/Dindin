@@ -47,4 +47,9 @@ public class Categoria {
     public BigDecimal aplicarImpactoFinanceiro(BigDecimal valor) {
         return this.natureza.aplicarImpactoFinanceiro(valor);
     }
+
+    public BigDecimal calcularValorInvestido(BigDecimal valor){
+        if(this.natureza == null) return BigDecimal.ZERO;
+        return this.natureza.calcularValorInvestido(valor);
+    }
 }

@@ -67,4 +67,9 @@ public class Transacao {
         return this.categoria.aplicarImpactoFinanceiro(valor);
     }
 
+    public BigDecimal getValorInvestido(){
+        if(this.categoria == null) return BigDecimal.ZERO;
+        return this.categoria.calcularValorInvestido(valor);
+    }
+
 }

@@ -17,4 +17,9 @@ public class Investimento extends Natureza{
         return valor.negate();
     }
 
+    @Override 
+    public BigDecimal calcularValorInvestido(BigDecimal valor){
+        return valor != null ? valor.abs() : BigDecimal.ZERO;
+    }
+
 }
