@@ -85,7 +85,6 @@
                     <tr class="bg-gray-100 border-b border-gray-300 text-sm">
                         <th class="p-3 font-semibold">Data</th>
                         <th class="p-3 font-semibold">Descrição</th>
-                        <th class="p-3 font-semibold">Tipo</th>
                         <th class="p-3 font-semibold">Categoria</th>
                         <th class="p-3 font-semibold">Valor</th>
                         <th class="p-3 font-semibold">Comentários</th>
@@ -97,9 +96,8 @@
                     <tr th:each="t : ${transacoes}" class="border-b border-gray-200 hover:bg-gray-50">
                         <td class="p-3" th:text="${#temporals.format(t.data, 'dd/MM/yyyy')}">01/01</td>
                         <td class="p-3 font-semibold" th:text="${t.descricao}">Desc</td>
-                        <td class="p-3 font-semibold" th:text="${t.movimento}">Tipo</td>
                         <td class="p-3" th:text="${t.categoria != null ? t.categoria.nome : 'Sem Categoria'}">Cat</td>
-                        <td class="p-3 font-bold" th:classappend="${t.categoria?.natureza?.classeCor}"
+                        <td class="p-3 font-bold"
                             th:text="${'R$ ' + #numbers.formatDecimal(t.valor, 1, 'POINT', 2, 'COMMA')}">
                             R$ 0,00
                         </td>

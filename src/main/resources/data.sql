@@ -1,5 +1,5 @@
--- 1. USUARIOS (10 registros)
-INSERT INTO usuario (id, nome, username, senha, role, bloqueado) VALUES
+-- 1. CORRENTISTAS (Ajustado para o nome exato da tabela da entidade Correntista)
+INSERT INTO correntista (id, nome, username, senha, role, bloqueado) VALUES
 (1, 'Melquisedeque Vital', 'melquisedeque@gmail.com', '$2a$12$otXSj0SovAxN8w49wtjKse.ExE.8OSXQmP1ye8/6RAVs3SYXPnCJ2', 'ROLE_ADMINISTRADOR', false),
 (2, 'Mariana Ludmilla', 'ludmilla@gmail.com', '$2a$12$otXSj0SovAxN8w49wtjKse.ExE.8OSXQmP1ye8/6RAVs3SYXPnCJ2', 'ROLE_ADMINISTRADOR', false),
 (3, 'Fred', 'fred@gmail.com', '$2a$12$otXSj0SovAxN8w49wtjKse.ExE.8OSXQmP1ye8/6RAVs3SYXPnCJ2', 'ROLE_CORRENTISTA', false),
@@ -12,14 +12,14 @@ INSERT INTO usuario (id, nome, username, senha, role, bloqueado) VALUES
 (10, 'Nabucodonosor', 'nabucodonosor@gmail.com', '$2a$12$otXSj0SovAxN8w49wtjKse.ExE.8OSXQmP1ye8/6RAVs3SYXPnCJ2', 'ROLE_CORRENTISTA', true)
 ON CONFLICT (id) DO NOTHING;
 
--- 2. NATUREZA (Entidades polimórficas herdadas de Natureza)
+-- 2. NATUREZA (Mapeamento polimórfico de Natureza com a coluna discriminadora tipo_natureza)
 INSERT INTO natureza (id, tipo_natureza, movimento) VALUES
 (1, 'Entrada', 'DEBITO'),
 (2, 'Saida', 'CREDITO'),
 (3, 'Investimento', 'CREDITO')
 ON CONFLICT (id) DO NOTHING;
 
--- 3. CATEGORIAS (Chave estrangeira natureza_id apontando para a tabela natureza)
+-- 3. CATEGORIAS (Chave estrangeira natureza_id vinculando cada categoria à sua Natureza)
 INSERT INTO categoria (id, nome, natureza_id, ativo, ordem) VALUES
 -- ENTRADAS (natureza_id = 1)
 (1, 'Salário', 1, true, 1),
@@ -78,7 +78,7 @@ INSERT INTO comentario (id, texto) VALUES
 (10, 'Subscrição de serviço de streaming')
 ON CONFLICT (id) DO NOTHING;
 
--- 6. TRANSACOES (Removido o campo movimento)
+-- 6. TRANSACOES (Sem a coluna redundante movimento)
 INSERT INTO transacao (id, data, descricao, valor, conta_id, categoria_id, comentario_id) VALUES
 -- Transações do Administrador Melquisedeque (Conta 1 e Cartão 2)
 (1, '2025-01-05', 'Salário Executivo', 12500.00, 1, 1, 1),
@@ -111,8 +111,8 @@ INSERT INTO transacao (id, data, descricao, valor, conta_id, categoria_id, comen
 (22, '2025-01-21', 'Fatura Telemóvel', 110.00, 10, 12, null)
 ON CONFLICT (id) DO NOTHING;
 
--- Sincronização das Sequências PostgreSQL
-SELECT setval(pg_get_serial_sequence('usuario', 'id'), coalesce(max(id), 1), max(id) IS NOT null) FROM usuario;
+-- Sincronização das Sequências PostgreSQL para evitar erros ao inserir novos registros pela aplicação
+SELECT setval(pg_get_serial_sequence('correntista', 'id'), coalesce(max(id), 1), max(id) IS NOT null) FROM correntista;
 SELECT setval(pg_get_serial_sequence('natureza', 'id'), coalesce(max(id), 1), max(id) IS NOT null) FROM natureza;
 SELECT setval(pg_get_serial_sequence('categoria', 'id'), coalesce(max(id), 1), max(id) IS NOT null) FROM categoria;
 SELECT setval(pg_get_serial_sequence('conta', 'id'), coalesce(max(id), 1), max(id) IS NOT null) FROM conta;
