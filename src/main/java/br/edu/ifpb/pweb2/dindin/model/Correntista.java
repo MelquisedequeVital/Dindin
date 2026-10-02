@@ -19,7 +19,7 @@ import lombok.Data;
 
 @Entity 
 @Data 
-public class Usuario {
+public class Correntista {
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,10 +33,10 @@ public class Usuario {
     @OneToMany(mappedBy = "correntista", cascade = CascadeType.ALL, fetch = FetchType.LAZY)  
     private List<Conta> contas;
 
-    public Usuario() {
+    public Correntista() {
     }
 
-    public Usuario(String nome, String username, String senha, Role role, boolean bloqueado) {
+    public Correntista(String nome, String username, String senha, Role role, boolean bloqueado) {
         this.nome = nome;
         this.username = username;
         this.senha = senha;
@@ -49,6 +49,6 @@ public class Usuario {
     }
 
     public boolean isAdmin(){
-        return this.role == role.ROLE_ADMINISTRADOR;
+        return this.role == Role.ROLE_ADMINISTRADOR;
     }
 }

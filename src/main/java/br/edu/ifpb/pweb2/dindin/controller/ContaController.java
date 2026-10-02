@@ -9,21 +9,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.edu.ifpb.pweb2.dindin.model.Conta;
-import br.edu.ifpb.pweb2.dindin.model.Usuario;
+import br.edu.ifpb.pweb2.dindin.model.Correntista;
 import br.edu.ifpb.pweb2.dindin.services.AuthService;
 import br.edu.ifpb.pweb2.dindin.services.ContaService;
 import br.edu.ifpb.pweb2.dindin.services.TransacaoService;
-import br.edu.ifpb.pweb2.dindin.services.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 
-@Controller
-public class UsuarioController {
-
-    @Autowired
-    private UsuarioService usuarioService;
+@Controller 
+@RequestMapping("/contas")
+public class ContaController {
 
     @Autowired
     private ContaService contaService;
@@ -34,32 +32,31 @@ public class UsuarioController {
     @Autowired
     private AuthService authService;
 
-    @GetMapping("/contas")
+    @GetMapping
     public String listaContas(HttpSession session, Model model) {
-        Usuario correntista = authService.getUsuarioLogado(session);
+        Correntista correntista = authService.getUsuarioLogado(session);
         List<Conta> listaContas = contaService.findByCorrentista(correntista);
         model.addAttribute("contas", listaContas);
         model.addAttribute("nomeCorrentistaLogado", correntista.getNome());
         return "contas/lista";
     }
 
-    @GetMapping("/contas/nova")
+    @GetMapping("/nova")
     public String contaForm(HttpSession session, Model model) {
-        Usuario correntista = authService.getUsuarioLogado(session);
+        Correntista correntista = authService.getUsuarioLogado(session);
         model.addAttribute("conta", new Conta());
         model.addAttribute("nomeCorrentistaLogado", correntista.getNome());
         model.addAttribute("isAdmin", correntista.isAdmin());
         return "contas/form";
     }
 
-    // Rota pra exibir o extrato da conta ne
-    @GetMapping("/contas/{id}")
+    @GetMapping("/{id}")
     public String extratoConta(@PathVariable("id") Long id, Model model, HttpSession session,
             RedirectAttributes redirectAttributes) {
         Optional<Conta> optConta = contaService.findById(id);
-        Usuario usuarioLogado = authService.getUsuarioLogado(session);
+        Correntista usuarioLogado = authService.getUsuarioLogado(session);
         if (optConta.isEmpty()) {
-            redirectAttributes.addFlashAttribute("mensagemErro", "Conta nǜo encontrada!");
+            redirectAttributes.addFlashAttribute("mensagemErro", "Conta não encontrada!");
             return "redirect:/contas";
         }
 
@@ -67,15 +64,13 @@ public class UsuarioController {
         model.addAttribute("conta", conta);
         model.addAttribute("nomeCorrentistaLogado", usuarioLogado.getNome());
         model.addAttribute("isAdmin", usuarioLogado.isAdmin());
-        model.addAttribute("valorTotalGasto", optConta.get().getSaldoLíquido());
+        model.addAttribute("valorTotalGasto", optConta.get().calcularSaldo());
         model.addAttribute("transacoes", transacaoService.findByConta(conta));
-        model.addAttribute("valorInvestido", optConta.get().getValorTotalInvestido());
         return "contas/extrato";
     }
 
-    @PostMapping("/contas")
+    @PostMapping
     public String addConta(HttpSession session, Conta conta, RedirectAttributes attr) {
-
         if (contaService.contaJaExiste(conta.getNumero())) {
             attr.addFlashAttribute("mensagemContaInvalida", "Conta existente, digite outro número");
             return "redirect:/contas/nova";
@@ -86,17 +81,15 @@ public class UsuarioController {
             return "redirect:/contas/nova";
         }
 
-        Usuario correntista = (Usuario) session.getAttribute("usuarioLogado");
+        Correntista correntista = (Correntista) session.getAttribute("usuarioLogado");
         conta.setCorrentista(correntista);
         contaService.salvar(conta);
         return "redirect:/contas";
-
     }
 
-    @PostMapping("contas/{id}/deletar")
+    @PostMapping("/{id}/deletar")
     public String deletarConta(@PathVariable("id") Long idConta) {
         contaService.deleteById(idConta);
         return "redirect:/contas";
     }
-
 }

@@ -1,8 +1,6 @@
 package br.edu.ifpb.pweb2.dindin.model;
 
-import br.edu.ifpb.pweb2.dindin.model.enums.Natureza;
-import br.edu.ifpb.pweb2.dindin.model.enums.TipoTransacao;
-import jakarta.annotation.Generated;
+import br.edu.ifpb.pweb2.dindin.model.enums.Movimento;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -33,7 +31,7 @@ public class Transacao {
     private BigDecimal valor;
 
     @Enumerated(EnumType.STRING)
-    private TipoTransacao movimento;
+    private Movimento movimento;
 
     @ManyToOne
     @JoinColumn(name = "conta_id")
@@ -50,7 +48,7 @@ public class Transacao {
     public Transacao() {
     }
 
-    public Transacao(LocalDate data, String descricao, BigDecimal valor, TipoTransacao movimento, Conta conta,
+    public Transacao(LocalDate data, String descricao, BigDecimal valor, Movimento movimento, Conta conta,
             Categoria categoria, Comentario comentario) {
         this.data = data;
         this.descricao = descricao;
@@ -61,27 +59,12 @@ public class Transacao {
         this.comentario = comentario;
     }
 
-    public BigDecimal getImpactoNoSaldo() {
-        if (this.valor == null || this.categoria == null || this.categoria.getNatureza() == null) {
+    public BigDecimal getImpactoFinanceiro() {
+        if (this.categoria == null || this.valor == null) {
             return BigDecimal.ZERO;
         }
 
-        return switch (this.categoria.getNatureza()) {
-            case ENTRADA -> this.valor;
-            case SAIDA -> this.valor.negate();
-            case INVESTIMENTO -> BigDecimal.ZERO;
-        };
-    }
-
-    public BigDecimal getValorInvestimento() {
-        if (isInvestimento() && this.valor != null) {
-            return this.valor;
-        }
-        return BigDecimal.ZERO;
-    }
-
-    public boolean isInvestimento() {
-        return this.categoria != null && this.categoria.getNatureza() == Natureza.INVESTIMENTO;
+        return this.categoria.aplicarImpactoFinanceiro(valor);
     }
 
 }

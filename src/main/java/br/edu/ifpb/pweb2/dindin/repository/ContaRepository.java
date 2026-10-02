@@ -6,12 +6,12 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.edu.ifpb.pweb2.dindin.model.Conta;
-import br.edu.ifpb.pweb2.dindin.model.Usuario;
+import br.edu.ifpb.pweb2.dindin.model.Correntista;
 
 
 public interface ContaRepository extends JpaRepository<Conta, Long>{
 
-    List<Conta> findByCorrentista(Usuario correntista);
+    List<Conta> findByCorrentista(Correntista correntista);
 
     List<Conta> findByCorrentistaId(Long id);
 

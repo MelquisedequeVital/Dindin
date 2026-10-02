@@ -26,7 +26,7 @@ public class Conta {
 
     @ManyToOne
     @JoinColumn(name = "correntista_id")
-    private Usuario correntista;
+    private Correntista correntista;
 
     @OneToMany(mappedBy = "conta", cascade = CascadeType.ALL)
     private List<Transacao> transacoes;
@@ -34,29 +34,24 @@ public class Conta {
     public Conta() {
     }
 
-    public Conta(String numero, String descricao, Usuario correntista) {
+    public Conta(String numero, String descricao, Correntista correntista) {
         this.numero = numero;
         this.descricao = descricao;
         this.correntista = correntista;
     }
 
-    public double getSaldoLíquido() {
-        if (transacoes == null)
-            return 0.0;
+    public BigDecimal calcularSaldo() {
+        BigDecimal valorTotal = BigDecimal.ZERO;
 
-        return transacoes.stream()
-                .map(Transacao::getImpactoNoSaldo)
-                .reduce(BigDecimal.ZERO, BigDecimal::add)
-                .doubleValue();
+        if (this.transacoes == null || this.transacoes.isEmpty()) {
+            return BigDecimal.ZERO;
+        }
+
+        for (Transacao trans : this.transacoes) {
+            valorTotal = valorTotal.add(trans.getImpactoFinanceiro());
+        }
+
+        return valorTotal;
     }
 
-    public double getValorTotalInvestido() {
-        if (transacoes == null)
-            return 0.0;
-
-        return transacoes.stream()
-                .map(Transacao::getValorInvestimento)
-                .reduce(BigDecimal.ZERO, BigDecimal::add)
-                .doubleValue();
-    }
 }

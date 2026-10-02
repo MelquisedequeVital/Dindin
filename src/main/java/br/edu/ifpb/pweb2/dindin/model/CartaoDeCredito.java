@@ -22,4 +22,5 @@ public class CartaoDeCredito extends Conta {
         this.diaFechamento = diaFechamento;
         this.limiteCredito = limiteCredito;
     }
+
 }

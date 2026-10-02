@@ -3,7 +3,7 @@ package br.edu.ifpb.pweb2.dindin.interceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import br.edu.ifpb.pweb2.dindin.model.Usuario;
+import br.edu.ifpb.pweb2.dindin.model.Correntista;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -15,7 +15,7 @@ public class AdminInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession(false);
 
         if (session != null) {
-            Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
+            Correntista usuario = (Correntista) session.getAttribute("usuarioLogado");
 
             if (usuario != null && usuario.isAdmin()) {
                 return true; // Possui permissão de admin

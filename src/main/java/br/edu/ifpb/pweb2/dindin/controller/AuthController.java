@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.edu.ifpb.pweb2.dindin.model.Usuario;
+import br.edu.ifpb.pweb2.dindin.model.Correntista;
 import br.edu.ifpb.pweb2.dindin.services.AuthService;
 import br.edu.ifpb.pweb2.dindin.services.UsuarioService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,7 +34,7 @@ public class AuthController {
                         HttpServletRequest httpServletRequest, 
                         RedirectAttributes attr) {
 
-        Optional<Usuario> usuarioAutenticado = authService.autenticarUsuario(username, senha);
+        Optional<Correntista> usuarioAutenticado = authService.autenticarUsuario(username, senha);
 
         if (usuarioAutenticado.isPresent()) {
             HttpSession oldSession = httpServletRequest.getSession(false);
@@ -66,12 +66,12 @@ public class AuthController {
     }
 
     @GetMapping("/cadastro")
-    public String getCadastroForm(Usuario usuario){
+    public String getCadastroForm(Correntista usuario){
         return "auth/cadastro";
     }
 
     @PostMapping("/cadastro")
-    public String cadastrar(Usuario usuario, RedirectAttributes redirectAttributes){
+    public String cadastrar(Correntista usuario, RedirectAttributes redirectAttributes){
         if(usuarioService.usuarioJaExiste(usuario.getUsername())) {
             redirectAttributes.addFlashAttribute("mensagemErro","Esse email já está em uso.");
             return "redirect:cadastro";

@@ -6,9 +6,9 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.edu.ifpb.pweb2.dindin.model.Usuario;
+import br.edu.ifpb.pweb2.dindin.model.Correntista;
 
 
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-    public Optional<Usuario> findByUsername(String username);
+public interface UsuarioRepository extends JpaRepository<Correntista, Long> {
+    public Optional<Correntista> findByUsername(String username);
 }

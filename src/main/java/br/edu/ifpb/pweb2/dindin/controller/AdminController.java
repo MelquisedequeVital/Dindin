@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.edu.ifpb.pweb2.dindin.model.Conta;
-import br.edu.ifpb.pweb2.dindin.model.Usuario;
+import br.edu.ifpb.pweb2.dindin.model.Correntista;
 import br.edu.ifpb.pweb2.dindin.model.enums.Role;
 import br.edu.ifpb.pweb2.dindin.services.ContaService;
 import br.edu.ifpb.pweb2.dindin.services.UsuarioService;
@@ -36,13 +36,13 @@ public class AdminController {
 
     @GetMapping("/correntistas/novo")
     public String formNovoCorrentista(Model model){
-        model.addAttribute("correntista", new Usuario());
+        model.addAttribute("correntista", new Correntista());
         model.addAttribute("roles", List.of(Role.values()));
         return "admin/correntistas/form";
     }
 
     @PostMapping("/correntistas")
-    public String adicionarCorrentista(Usuario usuario, RedirectAttributes attr){
+    public String adicionarCorrentista(Correntista usuario, RedirectAttributes attr){
 
         if(usuarioService.usuarioJaExiste(usuario.getUsername())){
             attr.addFlashAttribute("mensagemUsernameInvalido", "Esse username já existe, pense em outro");
@@ -55,7 +55,7 @@ public class AdminController {
 
     @GetMapping("correntista/{id}/contas")
     public String acessarContadeCorrentista(@PathVariable("id") Long idCorrentista ,Model model){
-        Usuario usuarioVisualizado = usuarioService.findById(idCorrentista);
+        Correntista usuarioVisualizado = usuarioService.findById(idCorrentista);
         List<Conta> listaContas = contaService.findByCorrentistaId(idCorrentista);
         model.addAttribute("contas", listaContas);
         model.addAttribute("usuarioSendoVisualizado", usuarioVisualizado);

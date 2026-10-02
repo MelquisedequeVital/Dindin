@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.ifpb.pweb2.dindin.model.Conta;
-import br.edu.ifpb.pweb2.dindin.model.Usuario;
+import br.edu.ifpb.pweb2.dindin.model.Correntista;
 import br.edu.ifpb.pweb2.dindin.model.enums.Role;
 import br.edu.ifpb.pweb2.dindin.repository.UsuarioRepository;
 import br.edu.ifpb.pweb2.dindin.util.PasswordUtil;
@@ -20,30 +20,30 @@ public class UsuarioService {
     @Autowired 
     private UsuarioRepository usuarioRepository;
 
-    public Usuario findByUsername(String username){
-        Optional<Usuario> usuarioEncontrado = usuarioRepository.findByUsername(username);
+    public Correntista findByUsername(String username){
+        Optional<Correntista> usuarioEncontrado = usuarioRepository.findByUsername(username);
         return usuarioEncontrado.get();
     }
 
-    public List<Usuario> findAll(){
+    public List<Correntista> findAll(){
         return usuarioRepository.findAll();
     }
 
-    public void save(Usuario usuario){
+    public void save(Correntista usuario){
         usuarioRepository.save(usuario);
     }
 
     public boolean usuarioJaExiste(String username){
-        Optional<Usuario> usuarioEncontrado = usuarioRepository.findByUsername(username);
+        Optional<Correntista> usuarioEncontrado = usuarioRepository.findByUsername(username);
         
         return usuarioEncontrado.isPresent();
     }
 
-    public Usuario findById(Long id){
+    public Correntista findById(Long id){
         return usuarioRepository.findById(id).get();
     }
 
-    public void cadastrar(Usuario usuario){
+    public void cadastrar(Correntista usuario){
         String senhaHash = PasswordUtil.hashPassword(usuario.getSenha());
         usuario.setSenha(senhaHash);
         usuario.setBloqueado(false);

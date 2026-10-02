@@ -8,7 +8,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import br.edu.ifpb.pweb2.dindin.model.Usuario;
+import br.edu.ifpb.pweb2.dindin.model.Correntista;
 
 @Service
 public class AuthService {
@@ -19,8 +19,8 @@ public class AuthService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public Optional<Usuario> autenticarUsuario(String username, String senha) {
-        Optional<Usuario> usuarioEncontrado = usuarioRepository.findByUsername(username);
+    public Optional<Correntista> autenticarUsuario(String username, String senha) {
+        Optional<Correntista> usuarioEncontrado = usuarioRepository.findByUsername(username);
         if (usuarioEncontrado.isPresent() && PasswordUtil.checkPass(senha, usuarioEncontrado.get().getSenha())) {
             return usuarioEncontrado;
         }
@@ -29,7 +29,7 @@ public class AuthService {
 
     }
 
-    public Usuario getUsuarioLogado(HttpSession session){
-        return (Usuario) session.getAttribute("usuarioLogado");
+    public Correntista getUsuarioLogado(HttpSession session){
+        return (Correntista) session.getAttribute("usuarioLogado");
     }
 }

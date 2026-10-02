@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.ifpb.pweb2.dindin.model.Conta;
-import br.edu.ifpb.pweb2.dindin.model.Usuario;
+import br.edu.ifpb.pweb2.dindin.model.Correntista;
 import br.edu.ifpb.pweb2.dindin.repository.ContaRepository;
 
 @Service 
@@ -16,7 +16,7 @@ public class ContaService {
     @Autowired 
     private ContaRepository contaRepository;
 
-    public List<Conta> findByCorrentista(Usuario correntista){
+    public List<Conta> findByCorrentista(Correntista correntista){
         return contaRepository.findByCorrentista(correntista);
     }
 
