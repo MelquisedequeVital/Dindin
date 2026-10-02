@@ -11,40 +11,46 @@ INSERT INTO usuario (id, nome, username, senha, role, bloqueado) VALUES
 (9, 'Felipe', 'felipe@gmail.com', '$2a$12$otXSj0SovAxN8w49wtjKse.ExE.8OSXQmP1ye8/6RAVs3SYXPnCJ2', 'ROLE_CORRENTISTA', false),
 (10, 'Nabucodonosor', 'nabucodonosor@gmail.com', '$2a$12$otXSj0SovAxN8w49wtjKse.ExE.8OSXQmP1ye8/6RAVs3SYXPnCJ2', 'ROLE_CORRENTISTA', true)
 ON CONFLICT (id) DO NOTHING;
--- A senha de todos os utilizadores é ifpb
 
--- 2. CATEGORIAS (Conforme a especificação do documento)
-INSERT INTO categoria (id, nome, natureza, ativo, ordem) VALUES
--- ENTRADAS (E)
-(1, 'Salário', 'ENTRADA', true, 1),
-(2, 'Cashback', 'ENTRADA', true, 2),
-(3, 'Resgate Investimento', 'ENTRADA', true, 3),
-(4, 'Outras Entradas', 'ENTRADA', true, 4),
-
--- SAÍDAS (S)
-(5, 'Saúde e Remédios', 'SAIDA', true, 1),
-(6, 'Academia e Personal', 'SAIDA', true, 2),
-(7, 'Carros e Uber', 'SAIDA', true, 3),
-(8, 'Educação e Cursos', 'SAIDA', true, 4),
-(9, 'Lazer e Turismo', 'SAIDA', true, 5),
-(10, 'Condomínio', 'SAIDA', true, 6),
-(11, 'Energia', 'SAIDA', true, 7),
-(12, 'Celular', 'SAIDA', true, 8),
-(13, 'Internet', 'SAIDA', true, 9),
-(14, 'Itens Pessoais', 'SAIDA', true, 10),
-(15, 'Feira', 'SAIDA', true, 11),
-(16, 'Casa', 'SAIDA', true, 12),
-(17, 'Impostos', 'SAIDA', true, 13),
-(18, 'Outros gastos', 'SAIDA', true, 14),
-
--- INVESTIMENTOS (I)
-(19, 'Aporte Renda Fixa', 'INVESTIMENTO', true, 1),
-(20, 'Aporte Renda Variável', 'INVESTIMENTO', true, 2),
-(21, 'Aporte Reserva Emergencia', 'INVESTIMENTO', true, 3),
-(22, 'Aporte Previdência', 'INVESTIMENTO', true, 4)
+-- 2. NATUREZA (Entidades polimórficas herdadas de Natureza)
+INSERT INTO natureza (id, tipo_natureza, movimento) VALUES
+(1, 'Entrada', 'DEBITO'),
+(2, 'Saida', 'CREDITO'),
+(3, 'Investimento', 'CREDITO')
 ON CONFLICT (id) DO NOTHING;
 
--- 3. CONTAS / CARTOES DE CREDITO
+-- 3. CATEGORIAS (Chave estrangeira natureza_id apontando para a tabela natureza)
+INSERT INTO categoria (id, nome, natureza_id, ativo, ordem) VALUES
+-- ENTRADAS (natureza_id = 1)
+(1, 'Salário', 1, true, 1),
+(2, 'Cashback', 1, true, 2),
+(3, 'Resgate Investimento', 1, true, 3),
+(4, 'Outras Entradas', 1, true, 4),
+
+-- SAÍDAS (natureza_id = 2)
+(5, 'Saúde e Remédios', 2, true, 1),
+(6, 'Academia e Personal', 2, true, 2),
+(7, 'Carros e Uber', 2, true, 3),
+(8, 'Educação e Cursos', 2, true, 4),
+(9, 'Lazer e Turismo', 2, true, 5),
+(10, 'Condomínio', 2, true, 6),
+(11, 'Energia', 2, true, 7),
+(12, 'Celular', 2, true, 8),
+(13, 'Internet', 2, true, 9),
+(14, 'Itens Pessoais', 2, true, 10),
+(15, 'Feira', 2, true, 11),
+(16, 'Casa', 2, true, 12),
+(17, 'Impostos', 2, true, 13),
+(18, 'Outros gastos', 2, true, 14),
+
+-- INVESTIMENTOS (natureza_id = 3)
+(19, 'Aporte Renda Fixa', 3, true, 1),
+(20, 'Aporte Renda Variável', 3, true, 2),
+(21, 'Aporte Reserva Emergencia', 3, true, 3),
+(22, 'Aporte Previdência', 3, true, 4)
+ON CONFLICT (id) DO NOTHING;
+
+-- 4. CONTAS / CARTOES DE CREDITO
 INSERT INTO conta (dtype, id, numero, descricao, correntista_id, dia_fechamento, limite_credito) VALUES
 ('Conta', 1, '1001', 'Conta Principal - Melquisedeque', 1, null, null),
 ('CartaoDeCredito', 2, '1002', 'Cartão Nubank - Melquisedeque', 1, 5, 8000.00),
@@ -58,7 +64,7 @@ INSERT INTO conta (dtype, id, numero, descricao, correntista_id, dia_fechamento,
 ('CartaoDeCredito', 10, '1010', 'Cartão C6 - Murilo', 8, 20, 12000.00)
 ON CONFLICT (id) DO NOTHING;
 
--- 4. COMENTARIOS
+-- 5. COMENTARIOS
 INSERT INTO comentario (id, texto) VALUES
 (1, 'Pagamento do salário referente ao mês de Janeiro'),
 (2, 'Almoço de negócios com clientes'),
@@ -72,41 +78,42 @@ INSERT INTO comentario (id, texto) VALUES
 (10, 'Subscrição de serviço de streaming')
 ON CONFLICT (id) DO NOTHING;
 
--- 5. TRANSACOES
-INSERT INTO transacao (id, data, descricao, valor, movimento, conta_id, categoria_id, comentario_id) VALUES
+-- 6. TRANSACOES (Removido o campo movimento)
+INSERT INTO transacao (id, data, descricao, valor, conta_id, categoria_id, comentario_id) VALUES
 -- Transações do Administrador Melquisedeque (Conta 1 e Cartão 2)
-(1, '2025-01-05', 'Salário Executivo', 12500.00, 'CREDITO', 1, 1, 1),
-(2, '2025-01-08', 'Supermercado Central', 850.40, 'DEBITO', 1, 15, null),
-(3, '2025-01-12', 'Aporte Reserva', 2000.00, 'DEBITO', 1, 21, 5),
-(4, '2025-01-15', 'Restaurante Paris', 320.00, 'DEBITO', 2, 9, 2),
+(1, '2025-01-05', 'Salário Executivo', 12500.00, 1, 1, 1),
+(2, '2025-01-08', 'Supermercado Central', 850.40, 1, 15, null),
+(3, '2025-01-12', 'Aporte Reserva', 2000.00, 1, 21, 5),
+(4, '2025-01-15', 'Restaurante Paris', 320.00, 2, 9, 2),
 
 -- Transações da Administradora Mariana (Conta 3)
-(5, '2025-01-05', 'Salário Gestão', 11000.00, 'CREDITO', 3, 1, null),
-(6, '2025-01-10', 'Plano de Saúde', 650.00, 'DEBITO', 3, 5, null),
-(7, '2025-01-18', 'Curso de Tecnologia', 1200.00, 'DEBITO', 3, 8, 7),
+(5, '2025-01-05', 'Salário Gestão', 11000.00, 3, 1, null),
+(6, '2025-01-10', 'Plano de Saúde', 650.00, 3, 5, null),
+(7, '2025-01-18', 'Curso de Tecnologia', 1200.00, 3, 8, 7),
 
--- Transações do Fred (Conta 5 e Cartão 4 - Bastante Dinheiro)
-(8, '2025-01-02', 'Salário Diretor Tech', 35000.00, 'CREDITO', 5, 1, null),
-(9, '2025-01-04', 'Projeto Consultoria Internacional', 28000.00, 'CREDITO', 5, 4, 6),
-(10, '2025-01-06', 'Bónus de Performance', 15000.00, 'CREDITO', 5, 4, 8),
-(11, '2025-01-10', 'Aporte Renda Fixa High Yield', 10000.00, 'DEBITO', 5, 19, null),
-(12, '2025-01-15', 'Aporte Ações B3', 15000.00, 'DEBITO', 5, 20, 9),
-(13, '2025-01-20', 'Jantar de Celebração', 1450.00, 'DEBITO', 4, 9, null),
-(14, '2025-01-22', 'Posto de Gasolina', 380.00, 'DEBITO', 4, 7, 3),
-(15, '2025-01-25', 'Condomínio de Luxo', 2200.00, 'DEBITO', 5, 10, 4),
+-- Transações do Fred (Conta 5 e Cartão 4)
+(8, '2025-01-02', 'Salário Diretor Tech', 35000.00, 5, 1, null),
+(9, '2025-01-04', 'Projeto Consultoria Internacional', 28000.00, 5, 4, 6),
+(10, '2025-01-06', 'Bónus de Performance', 15000.00, 5, 4, 8),
+(11, '2025-01-10', 'Aporte Renda Fixa High Yield', 10000.00, 5, 19, null),
+(12, '2025-01-15', 'Aporte Ações B3', 15000.00, 5, 20, 9),
+(13, '2025-01-20', 'Jantar de Celebração', 1450.00, 4, 9, null),
+(14, '2025-01-22', 'Posto de Gasolina', 380.00, 4, 7, 3),
+(15, '2025-01-25', 'Condomínio de Luxo', 2200.00, 5, 10, 4),
 
 -- Transações dos outros Correntistas
-(16, '2025-01-05', 'Salário Dev', 6200.00, 'CREDITO', 6, 1, null),
-(17, '2025-01-07', 'Feira Quinzenal', 420.00, 'DEBITO', 6, 15, null),
-(18, '2025-01-05', 'Salário Analista', 4800.00, 'CREDITO', 8, 1, null),
-(19, '2025-01-12', 'Mensalidade Academia', 180.00, 'DEBITO', 7, 6, null),
-(20, '2025-01-14', 'Conta de Energia', 290.50, 'DEBITO', 9, 11, null),
-(21, '2025-01-19', 'Cashback Compras', 125.30, 'CREDITO', 9, 2, 10),
-(22, '2025-01-21', 'Fatura Telemóvel', 110.00, 'DEBITO', 10, 12, null)
+(16, '2025-01-05', 'Salário Dev', 6200.00, 6, 1, null),
+(17, '2025-01-07', 'Feira Quinzenal', 420.00, 6, 15, null),
+(18, '2025-01-05', 'Salário Analista', 4800.00, 8, 1, null),
+(19, '2025-01-12', 'Mensalidade Academia', 180.00, 7, 6, null),
+(20, '2025-01-14', 'Conta de Energia', 290.50, 9, 11, null),
+(21, '2025-01-19', 'Cashback Compras', 125.30, 9, 2, 10),
+(22, '2025-01-21', 'Fatura Telemóvel', 110.00, 10, 12, null)
 ON CONFLICT (id) DO NOTHING;
 
 -- Sincronização das Sequências PostgreSQL
 SELECT setval(pg_get_serial_sequence('usuario', 'id'), coalesce(max(id), 1), max(id) IS NOT null) FROM usuario;
+SELECT setval(pg_get_serial_sequence('natureza', 'id'), coalesce(max(id), 1), max(id) IS NOT null) FROM natureza;
 SELECT setval(pg_get_serial_sequence('categoria', 'id'), coalesce(max(id), 1), max(id) IS NOT null) FROM categoria;
 SELECT setval(pg_get_serial_sequence('conta', 'id'), coalesce(max(id), 1), max(id) IS NOT null) FROM conta;
 SELECT setval(pg_get_serial_sequence('comentario', 'id'), coalesce(max(id), 1), max(id) IS NOT null) FROM comentario;

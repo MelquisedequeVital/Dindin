@@ -30,9 +30,6 @@ public class Transacao {
     private String descricao;
     private BigDecimal valor;
 
-    @Enumerated(EnumType.STRING)
-    private Movimento movimento;
-
     @ManyToOne
     @JoinColumn(name = "conta_id")
     private Conta conta;
@@ -48,12 +45,12 @@ public class Transacao {
     public Transacao() {
     }
 
-    public Transacao(LocalDate data, String descricao, BigDecimal valor, Movimento movimento, Conta conta,
+    public Transacao(LocalDate data, String descricao, BigDecimal valor, Conta conta,
             Categoria categoria, Comentario comentario) {
         this.data = data;
         this.descricao = descricao;
         this.valor = valor;
-        this.movimento = movimento;
+
         this.conta = conta;
         this.categoria = categoria;
         this.comentario = comentario;

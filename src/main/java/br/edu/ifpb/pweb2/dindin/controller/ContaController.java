@@ -66,6 +66,7 @@ public class ContaController {
         model.addAttribute("isAdmin", usuarioLogado.isAdmin());
         model.addAttribute("valorTotalGasto", optConta.get().calcularSaldo());
         model.addAttribute("transacoes", transacaoService.findByConta(conta));
+        model.addAttribute("valorInvestido", optConta.get().calcularTotalInvestido());
         return "contas/extrato";
     }
 
