@@ -2,6 +2,7 @@ package br.edu.ifpb.pweb2.dindin.model;
 
 import java.math.BigDecimal;
 
+import br.edu.ifpb.pweb2.dindin.model.enums.Movimento;
 import br.edu.ifpb.pweb2.dindin.model.natureza.Natureza;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -51,5 +52,9 @@ public class Categoria {
     public BigDecimal calcularValorInvestido(BigDecimal valor){
         if(this.natureza == null) return BigDecimal.ZERO;
         return this.natureza.calcularValorInvestido(valor);
+    }
+
+    public Movimento getMovimento(){
+        return this.natureza.getMovimento();
     }
 }

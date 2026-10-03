@@ -69,4 +69,8 @@ public class Transacao {
         return this.categoria.calcularValorInvestido(valor);
     }
 
+    public Movimento getMovimento(){
+        return this.categoria.getMovimento();
+    }
+
 }

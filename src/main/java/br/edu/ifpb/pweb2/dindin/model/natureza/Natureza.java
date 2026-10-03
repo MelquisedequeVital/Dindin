@@ -22,18 +22,10 @@ public abstract class Natureza {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
-    @Enumerated(EnumType.STRING) 
-    private Movimento movimento;
-
-    public Natureza(Movimento movimento){
-        this.movimento = movimento;
-    }
 
     public abstract BigDecimal aplicarImpactoFinanceiro(BigDecimal valor);
 
-    public Movimento getMovimento(){
-        return this.movimento;
-    }
+    public abstract Movimento getMovimento();
 
     public BigDecimal calcularValorInvestido(BigDecimal valor){
         return BigDecimal.ZERO;
