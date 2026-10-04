@@ -129,6 +129,12 @@
                         <td class="p-3">
                             <a th:href="@{/transacoes/editar/{id}(id=${t.id})}"
                                 class="text-blue-600 hover:underline text-xs">Editar</a>
+                            <form th:action="@{/transacoes/remover/{id}(id=${t.id})}" method="post" class="m-0">
+                                <button type="submit" onclick="return confirm('Tem certeza que deseja apagar esta transação?')"
+                                class="text-red-600 hover:underline text-xs font-semibold">
+                                Excluir
+                                </button>
+                            </form>
                         </td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(transacoes)}">

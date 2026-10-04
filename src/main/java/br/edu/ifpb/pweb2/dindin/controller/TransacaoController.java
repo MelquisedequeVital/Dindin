@@ -86,4 +86,23 @@ public class TransacaoController {
 
         return "redirect:/contas";
     }
+
+    @PostMapping("/remover/{id}")
+    public String removerTransacao(@PathVariable("id") Long id, RedirectAttributes redirectAttributes){
+        Optional<Transacao> optTransacao = transacaoService.findById(id);
+        if (optTransacao.isPresent()){
+            Transacao transacao = optTransacao.get();
+            Long contaId = transacao.getConta() != null ? transacao.getConta().getId() : null;
+
+            transacaoService.excluir(id);
+            redirectAttributes.addFlashAttribute("mensagemSucesso","Transação apagada com sucesso!");
+
+            if (contaId != null){
+                return "redirect:/contas/"+ contaId;
+            }
+        } else {
+            redirectAttributes.addFlashAttribute("mensagemErro","Transação não encontrada!");
+        }
+        return "redirect:/contas";
+    }
 }
