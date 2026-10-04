@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Dindin - Nova Transação</title>
+    <title>Dindin - Transação</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <script>tailwind.config = { theme: { extend: { colors: { brand: { purple: '#7C3AED' } } } } }</script>
 </head>
+
 <body class="bg-gray-100 text-gray-800 font-sans min-h-screen">
 
     <header class="bg-white border-b border-gray-300 p-4 flex justify-between items-center">
@@ -18,7 +20,7 @@
             <a th:if="${isAdmin != null and isAdmin}" th:href="@{/admin/correntistas}" class="hover:text-brand-purple underline">Painel Admin</a>
             <div class="flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 text-brand-purple">
                 <span class="material-symbols-outlined text-sm">person</span>
-                <span th:text="${session.usuarioLogado.nome}">Usuário</span>
+                <span th:text="${session.usuarioLogado != null ? session.usuarioLogado.nome : 'Usuário'}">Usuário</span>
             </div>
         </div>
     </header>
@@ -47,23 +49,43 @@
                     <input type="date" th:field="*{data}" required class="w-full border border-gray-300 rounded p-2 text-sm focus:border-brand-purple outline-none">
                 </div>
                 
-                
                 <div>
                     <label class="block font-semibold mb-1 text-sm">Categoria</label>
                     <select th:field="*{categoria.id}" required class="w-full border border-gray-300 rounded p-2 text-sm focus:border-brand-purple bg-white outline-none">
                         <option value="">-- Selecione --</option>
-                        <option th:each="cat : ${categorias}" th:value="${cat.id}" th:text="${cat.nome + ' (' + cat.natureza + ')'}"></option>
+                        <option th:each="cat : ${categorias}" 
+                                th:value="${cat.id}" 
+                                th:text="${cat.nome + (cat.natureza != null ? ' (' + cat.natureza.class.simpleName + ')' : '')}">
+                        </option>
                     </select>
                 </div>
                 
-                <div>
-                    <label class="block font-semibold mb-1 text-sm">Comentário (opcional)</label>
-                    <textarea th:field="*{comentario.texto}" rows="2" class="w-full border border-gray-300 rounded p-2 text-sm focus:border-brand-purple outline-none"></textarea>
+<!-- SEÇÃO DE COMENTÁRIOS EDITÁVEIS -->
+<div class="space-y-3">
+    <label class="block font-semibold text-sm">Comentários</label>
+
+                    <!-- Lista de comentários existentes para EDIÇÃO DIRETA -->
+                    <div th:each="comentario, stat : *{comentarios}" class="flex items-center gap-2">
+                        <input type="hidden" th:field="*{comentarios[__${stat.index}__].id}" />
+                        <input type="text" 
+                            th:field="*{comentarios[__${stat.index}__].texto}" 
+                            placeholder="Editar comentário..." 
+                            class="w-full border border-gray-300 rounded p-2 text-sm focus:border-brand-purple outline-none">
+                    </div>
+
+                    <!-- Campo para adicionar um NOVO comentário -->
+                    <div>
+                        <input type="text" 
+                            name="novoComentario" 
+                            placeholder="+ Adicionar novo comentário..." 
+                            class="w-full border border-dashed border-gray-400 rounded p-2 text-sm focus:border-brand-purple outline-none bg-gray-50">
+                    </div>
+                    <p class="text-[11px] text-gray-500">Dica: apague o texto de um comentário para removê-lo ao salvar.</p>
                 </div>
                 
                 <div class="flex gap-2 mt-2">
-                    <button type="submit" class="bg-brand-purple text-white px-4 py-2 rounded font-bold w-full text-sm hover:bg-purple-700">Salvar</button>
-                    <a th:href="@{/contas}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded font-bold text-center w-full text-sm hover:bg-gray-300">Cancelar</a>
+                    <button type="submit" class="bg-brand-purple text-white px-4 py-2 rounded font-bold w-full text-sm hover:bg-purple-700 transition">Salvar</button>
+                    <a th:href="@{/contas}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded font-bold text-center w-full text-sm hover:bg-gray-300 transition">Cancelar</a>
                 </div>
             </form>
         </div>

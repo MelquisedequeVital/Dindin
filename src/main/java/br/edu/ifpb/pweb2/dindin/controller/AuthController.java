@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -66,7 +67,8 @@ public class AuthController {
     }
 
     @GetMapping("/cadastro")
-    public String getCadastroForm(Correntista usuario){
+    public String getCadastroForm(Correntista usuario, Model model){
+        model.addAttribute("usuario", new Correntista());
         return "auth/cadastro";
     }
 
@@ -74,7 +76,7 @@ public class AuthController {
     public String cadastrar(Correntista usuario, RedirectAttributes redirectAttributes){
         if(usuarioService.usuarioJaExiste(usuario.getUsername())) {
             redirectAttributes.addFlashAttribute("mensagemErro","Esse email já está em uso.");
-            return "redirect:cadastro";
+            return "redirect:/cadastro";
         }
 
         usuarioService.cadastrar(usuario);

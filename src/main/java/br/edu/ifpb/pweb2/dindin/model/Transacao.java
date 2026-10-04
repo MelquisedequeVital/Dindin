@@ -10,11 +10,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -38,22 +41,25 @@ public class Transacao {
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "comentario_id", nullable = true)
-    private Comentario comentario;
+    @OneToMany(mappedBy = "transacao", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comentario> comentarios = new ArrayList<>();
 
     public Transacao() {
     }
 
     public Transacao(LocalDate data, String descricao, BigDecimal valor, Conta conta,
-            Categoria categoria, Comentario comentario) {
+            Categoria categoria) {
         this.data = data;
         this.descricao = descricao;
         this.valor = valor;
 
         this.conta = conta;
         this.categoria = categoria;
-        this.comentario = comentario;
+    }
+
+    public void addComentario(Comentario comentario){
+        this.comentarios.add(comentario);
+        comentario.setTransacao(this);
     }
 
     public BigDecimal getImpactoFinanceiro() {

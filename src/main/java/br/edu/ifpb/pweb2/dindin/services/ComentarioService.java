@@ -12,11 +12,9 @@ import br.edu.ifpb.pweb2.dindin.repository.TransacaoRepository;
 @Service 
 public class ComentarioService {
     private final ComentarioRepository comentarioRepository;
-    private final TransacaoRepository transacaoRepository;
 
-    public ComentarioService(ComentarioRepository comentarioRepository, TransacaoRepository transacaoRepository){
+    public ComentarioService(ComentarioRepository comentarioRepository){
         this.comentarioRepository = comentarioRepository;
-        this.transacaoRepository = transacaoRepository;
     }
 
     public Optional<Comentario> findById(Long id){
@@ -25,17 +23,12 @@ public class ComentarioService {
 
     public Comentario salvarOuAtualizar(Comentario comentario, Transacao transacao){
         comentario.setTransacao(transacao);
-        Comentario salvo = comentarioRepository.save(comentario);
-
-        transacao.setComentario(salvo);
-        transacaoRepository.save(transacao);
-
-        return salvo;
+        if(transacao.getComentarios() != null){
+            transacao.addComentario(comentario);
+        }
+        return comentarioRepository.save(comentario);
     }
-    // excluir comentario
-    public void excluir(Long comentarioId, Transacao transacao){
-        transacao.setComentario(null);
-        transacaoRepository.save(transacao);
+    public void excluir(Long comentarioId){
         comentarioRepository.deleteById(comentarioId);
     }
 }

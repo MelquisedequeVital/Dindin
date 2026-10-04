@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.Model;
 
+import br.edu.ifpb.pweb2.dindin.model.Comentario;
 import br.edu.ifpb.pweb2.dindin.model.Conta;
 import br.edu.ifpb.pweb2.dindin.model.Transacao;
 import br.edu.ifpb.pweb2.dindin.services.CategoriaService;
@@ -61,7 +63,20 @@ public class TransacaoController {
     }
 
     @PostMapping ("/salvar")
-    public String salvarTransacao(@ModelAttribute("transacao") Transacao transacao, RedirectAttributes redirectAttributes){
+    public String salvarTransacao(@ModelAttribute("transacao") Transacao transacao, 
+    @RequestParam(value= "novoComentario", required = false) String novoComentario, RedirectAttributes redirectAttributes){
+        if (transacao.getId() != null){
+            transacaoService.findById(transacao.getId()).ifPresent(existente -> {
+                transacao.setComentarios(existente.getComentarios());
+            });
+        }
+
+        if (novoComentario != null && !novoComentario.isBlank()){
+            Comentario comentario = new Comentario();
+            comentario.setTexto(novoComentario);
+            transacao.addComentario(comentario);
+        }
+        
         transacaoService.salvar(transacao);
         redirectAttributes.addFlashAttribute("mensagemSucesso","Transação salva com sucesso!");
         
