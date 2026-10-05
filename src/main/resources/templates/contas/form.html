@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Dindin - Nova Conta</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
     <script>tailwind.config = { theme: { extend: { colors: { brand: { purple: '#7C3AED' } } } } }</script>
 </head>
+
 <body class="bg-gray-100 text-gray-800 font-sans min-h-screen">
 
     <header class="bg-white border-b border-gray-300 p-4 flex justify-between items-center">
@@ -15,8 +18,10 @@
         </div>
         <div class="flex items-center gap-4 text-sm font-semibold">
             <a th:href="@{/contas}" class="hover:text-brand-purple underline">Minhas Contas</a>
-            <a th:if="${isAdmin != null and isAdmin}" th:href="@{/admin/correntistas}" class="hover:text-brand-purple underline">Painel Admin</a>
-            <div class="flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 text-brand-purple">
+            <a th:if="${isAdmin != null and isAdmin}" th:href="@{/admin/correntistas}"
+                class="hover:text-brand-purple underline">Painel Admin</a>
+            <div
+                class="flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 text-brand-purple">
                 <span class="material-symbols-outlined text-sm">person</span>
                 <span th:text="${nomeCorrentistaLogado != null ? nomeCorrentistaLogado : 'Usuário'}">Usuário</span>
             </div>
@@ -25,30 +30,74 @@
 
     <main class="max-w-sm mx-auto p-6 mt-6">
         <a th:href="@{/contas}" class="text-brand-purple underline text-sm mb-4 inline-block">&larr; Voltar</a>
-        
-        <div th:if="${mensagemContaInvalida}" class="bg-red-100 text-red-700 p-2 rounded mb-4 text-center text-sm" th:text="${mensagemContaInvalida}"></div>
+
+        <div th:if="${mensagemContaInvalida}" class="bg-red-100 text-red-700 p-2 rounded mb-4 text-center text-sm"
+            th:text="${mensagemContaInvalida}"></div>
 
         <div class="bg-white border border-gray-300 rounded p-6 shadow-sm">
             <h1 class="text-2xl font-bold mb-4 text-center">Nova Conta</h1>
-            
-            <form th:action="@{/contas}" th:object="${conta}" method="post" class="flex flex-col gap-4">
-                
+
+            <form th:action="@{/contas}" th:object="${contaForm}" method="post" class="flex flex-col gap-4">
+
+                <div>
+                    <label class="block font-semibold mb-1 text-sm">Tipo de Conta</label>
+                    <select id="selectTipoConta" th:field="*{tipoConta}" onchange="toggleCamposCredito()"
+                        class="w-full border border-gray-300 rounded p-2 text-sm focus:border-brand-purple outline-none bg-white">
+                        <option value="DEBITO">Conta Débito / Comum</option>
+                        <option value="CREDITO">Cartão de Crédito</option>
+                    </select>
+                </div>
+
                 <div>
                     <label class="block font-semibold mb-1 text-sm">Número da Conta</label>
-                    <input type="text" th:field="*{numero}" required class="w-full border border-gray-300 rounded p-2 text-sm focus:border-brand-purple outline-none">
+                    <input type="text" th:field="*{numero}" required
+                        class="w-full border border-gray-300 rounded p-2 text-sm focus:border-brand-purple outline-none">
                 </div>
-                
+
                 <div>
                     <label class="block font-semibold mb-1 text-sm">Nome / Banco</label>
-                    <input type="text" th:field="*{descricao}" required class="w-full border border-gray-300 rounded p-2 text-sm focus:border-brand-purple outline-none">
+                    <input type="text" th:field="*{descricao}" required
+                        class="w-full border border-gray-300 rounded p-2 text-sm focus:border-brand-purple outline-none">
                 </div>
-                
+
+                <div id="camposCredito" class="hidden flex flex-col gap-4 border-t border-gray-200 pt-3">
+                    <div>
+                        <label class="block font-semibold mb-1 text-sm text-purple-900">Limite do Cartão (R$)</label>
+                        <input type="number" step="0.01" th:field="*{limiteCredito}" placeholder="Ex: 2500.00"
+                            class="w-full border border-gray-300 rounded p-2 text-sm focus:border-brand-purple outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold mb-1 text-sm text-purple-900">Dia de Fechamento da
+                            Fatura</label>
+                        <input type="number" min="1" max="31" th:field="*{diaFechamento}" placeholder="Ex: 10"
+                            class="w-full border border-gray-300 rounded p-2 text-sm focus:border-brand-purple outline-none">
+                    </div>
+                </div>
+
                 <div class="flex gap-2 mt-2">
-                    <button type="submit" class="bg-brand-purple text-white px-4 py-2 rounded font-bold w-full text-sm hover:bg-purple-700">Salvar</button>
-                    <a th:href="@{/contas}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded font-bold text-center w-full text-sm hover:bg-gray-300">Cancelar</a>
+                    <button type="submit"
+                        class="bg-brand-purple text-white px-4 py-2 rounded font-bold w-full text-sm hover:bg-purple-700">Salvar</button>
+                    <a th:href="@{/contas}"
+                        class="bg-gray-200 text-gray-700 px-4 py-2 rounded font-bold text-center w-full text-sm hover:bg-gray-300">Cancelar</a>
                 </div>
             </form>
         </div>
     </main>
+    <script>
+        function toggleCamposCredito() {
+            const selectTipo = document.getElementById('selectTipoConta');
+            const camposCredito = document.getElementById('camposCredito');
+
+            if (selectTipo.value === 'CREDITO') {
+                camposCredito.classList.remove('hidden');
+            } else {
+                camposCredito.classList.add('hidden');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', toggleCamposCredito);
+    </script>
 </body>
+
 </html>

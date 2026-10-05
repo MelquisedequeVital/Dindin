@@ -6,8 +6,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.edu.ifpb.pweb2.dindin.mapper.ContaMapper;
 import br.edu.ifpb.pweb2.dindin.model.Conta;
 import br.edu.ifpb.pweb2.dindin.model.Correntista;
+import br.edu.ifpb.pweb2.dindin.model.dtos.ContaForm;
 import br.edu.ifpb.pweb2.dindin.repository.ContaRepository;
 
 @Service 
@@ -15,6 +17,9 @@ public class ContaService {
 
     @Autowired 
     private ContaRepository contaRepository;
+
+    @Autowired 
+    private ContaMapper contaMapper;
 
     public List<Conta> findByCorrentista(Correntista correntista){
         return contaRepository.findByCorrentista(correntista);
@@ -40,6 +45,11 @@ public class ContaService {
 
     public void deleteById(Long id){
         contaRepository.deleteById(id);
+    }
+
+    public Conta salvarFromDTO(ContaForm form, Correntista correntista){
+        Conta conta = contaMapper.toEntity(form, correntista);
+        return contaRepository.save(conta);
     }
 
 }

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.edu.ifpb.pweb2.dindin.model.Conta;
 import br.edu.ifpb.pweb2.dindin.model.Correntista;
+import br.edu.ifpb.pweb2.dindin.model.dtos.ContaForm;
 import br.edu.ifpb.pweb2.dindin.services.AuthService;
 import br.edu.ifpb.pweb2.dindin.services.ContaService;
 import br.edu.ifpb.pweb2.dindin.services.TransacaoService;
@@ -44,7 +45,7 @@ public class ContaController {
     @GetMapping("/nova")
     public String contaForm(HttpSession session, Model model) {
         Correntista correntista = authService.getUsuarioLogado(session);
-        model.addAttribute("conta", new Conta());
+        model.addAttribute("contaForm", new ContaForm());
         model.addAttribute("nomeCorrentistaLogado", correntista.getNome());
         model.addAttribute("isAdmin", correntista.isAdmin());
         return "contas/form";
@@ -71,20 +72,19 @@ public class ContaController {
     }
 
     @PostMapping
-    public String addConta(HttpSession session, Conta conta, RedirectAttributes attr) {
-        if (contaService.contaJaExiste(conta.getNumero())) {
+    public String addConta(HttpSession session, ContaForm contaForm, RedirectAttributes attr) {
+        if (contaService.contaJaExiste(contaForm.getNumero())) {
             attr.addFlashAttribute("mensagemContaInvalida", "Conta existente, digite outro número");
             return "redirect:/contas/nova";
         }
 
-        if (conta.getNumero() == null || conta.getNumero().trim().isEmpty()) {
+        if (contaForm.getNumero() == null || contaForm.getNumero().trim().isEmpty()) {
             attr.addFlashAttribute("mensagemContaInvalida", "Número da conta obrigatório");
             return "redirect:/contas/nova";
         }
 
-        Correntista correntista = (Correntista) session.getAttribute("usuarioLogado");
-        conta.setCorrentista(correntista);
-        contaService.salvar(conta);
+        Correntista correntista = authService.getUsuarioLogado(session);
+        contaService.salvarFromDTO(contaForm, correntista);
         return "redirect:/contas";
     }
 
