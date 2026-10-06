@@ -27,34 +27,33 @@ public class ComentarioController {
 
     @PostMapping("/salvar")
     public String salvarComentario(@RequestParam("transacaoId") Long transacaoId, @RequestParam("contaId") Long contaId, @RequestParam("texto") String texto, RedirectAttributes redirectAttributes){
-        Optional<Transacao> optTransacao = transacaoService.findById(transacaoId);
-        
-        if (optTransacao.isPresent() && texto!= null && !texto.isBlank()){
-            Transacao transacao = optTransacao.get();
-
-            Comentario novoComentario = new Comentario();
-            novoComentario.setTexto(texto);
-            comentarioService.salvarOuAtualizar(novoComentario, transacao);
-            redirectAttributes.addFlashAttribute("mensagemSucesso","Comentario adicionado com sucesso!");
-        } else {
-            redirectAttributes.addFlashAttribute("mensagemErro", "Transação não encontrada.");
+        // pra verificar se está em branco
+        if (texto == null || texto.isBlank()){
+            redirectAttributes.addFlashAttribute("mensagemErro","O comentário não pode ser vazio.");
+            return "redirect:/contas/" + contaId;
         }
-        return "redirect:/contas/" + contaId;
+        // pra verificar se transação existe mesmo
+        Optional<Transacao> optTransacao = transacaoService.findById(transacaoId);
+        if (optTransacao.isEmpty()){
+            redirectAttributes.addFlashAttribute("mensagemErro","Transação não encontrada.");
+            return "redirect:/contas/" + contaId;
+        }
+        // set no comentario, o trim é pra tirar espaço em branco
+        Comentario novoComentario = new Comentario();
+        novoComentario.setTexto(texto.trim());
+        comentarioService.salvarOuAtualizar(novoComentario, optTransacao.get());
+        redirectAttributes.addFlashAttribute("mensagemSucesso","Comentario adicionado com sucesso!");
+        return "redirect:/contas/" + contaId;    
     }
 
     @PostMapping("/remover")
-    public String removerComentario(@RequestParam(value = "comentarioId", required = false) Long comentarioId, @RequestParam("contaId") Long contaId, RedirectAttributes redirectAttributes){
-        if (comentarioId != null){
-            try{
-                comentarioService.excluir(comentarioId);
-                redirectAttributes.addFlashAttribute("mensagemSucesso","Comentário removido com sucesso!");
-            } catch(Exception e){
-                redirectAttributes.addFlashAttribute("mensagemErro","Erro ao remover o comentário.");
-            }
-        } else{
-            redirectAttributes.addFlashAttribute("mensagemErro", "Identificador do comentário inválido.");     
+    public String removerComentario(@RequestParam Long comentarioId, @RequestParam("contaId") Long contaId, RedirectAttributes redirectAttributes){
+        try{
+            comentarioService.excluir(comentarioId);
+            redirectAttributes.addFlashAttribute("mensagemSucesso","Comentário removido com sucesso!");
+        } catch(Exception e){
+            redirectAttributes.addFlashAttribute("mensagemErro","Erro ao remover o comentário.");
         }
-
         return "redirect:/contas/" + contaId;
     }
 }

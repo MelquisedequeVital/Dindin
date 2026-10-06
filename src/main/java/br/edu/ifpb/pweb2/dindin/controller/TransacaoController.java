@@ -48,7 +48,6 @@ public class TransacaoController {
         return "transacoes/form";
     }
 
-// TODO: data não está aindo automaticamente
     @GetMapping("/editar/{id}")
     public String formEditarTransacao(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes){
         Optional<Transacao> optTransacao = transacaoService.findById(id);
@@ -65,10 +64,11 @@ public class TransacaoController {
     @PostMapping ("/salvar")
     public String salvarTransacao(@ModelAttribute("transacao") Transacao transacao, 
     @RequestParam(value= "novoComentario", required = false) String novoComentario, RedirectAttributes redirectAttributes){
-        if (transacao.getId() != null){
-            transacaoService.findById(transacao.getId()).ifPresent(existente -> {
-                transacao.setComentarios(existente.getComentarios());
-            });
+       
+        if (transacao.getComentarios() != null){
+            for (Comentario c : transacao.getComentarios()){
+                c.setTransacao(transacao);
+            }
         }
 
         if (novoComentario != null && !novoComentario.isBlank()){

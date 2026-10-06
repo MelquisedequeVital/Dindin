@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import br.edu.ifpb.pweb2.dindin.model.Comentario;
 import br.edu.ifpb.pweb2.dindin.model.Transacao;
 import br.edu.ifpb.pweb2.dindin.repository.ComentarioRepository;
-import br.edu.ifpb.pweb2.dindin.repository.TransacaoRepository;
 
 @Service 
 public class ComentarioService {

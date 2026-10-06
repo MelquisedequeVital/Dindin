@@ -60,11 +60,9 @@
                     </select>
                 </div>
                 
-<!-- SEÇÃO DE COMENTÁRIOS EDITÁVEIS -->
 <div class="space-y-3">
     <label class="block font-semibold text-sm">Comentários</label>
 
-                    <!-- Lista de comentários existentes para EDIÇÃO DIRETA -->
                     <div th:each="comentario, stat : *{comentarios}" class="flex items-center gap-2">
                         <input type="hidden" th:field="*{comentarios[__${stat.index}__].id}" />
                         <input type="text" 
@@ -72,8 +70,6 @@
                             placeholder="Editar comentário..." 
                             class="w-full border border-gray-300 rounded p-2 text-sm focus:border-brand-purple outline-none">
                     </div>
-
-                    <!-- Campo para adicionar um NOVO comentário -->
                     <div>
                         <input type="text" 
                             name="novoComentario" 
