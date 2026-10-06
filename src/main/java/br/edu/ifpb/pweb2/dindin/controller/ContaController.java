@@ -20,7 +20,7 @@ import br.edu.ifpb.pweb2.dindin.services.ContaService;
 import br.edu.ifpb.pweb2.dindin.services.TransacaoService;
 import jakarta.servlet.http.HttpSession;
 
-@Controller 
+@Controller
 @RequestMapping("/contas")
 public class ContaController {
 
@@ -89,8 +89,18 @@ public class ContaController {
     }
 
     @PostMapping("/{id}/deletar")
-    public String deletarConta(@PathVariable("id") Long idConta) {
-        contaService.deleteById(idConta);
+    public String deletarConta(@PathVariable("id") Long idConta, HttpSession session) {
+        Optional<Conta> optConta = contaService.findById(idConta);
+
+        if (optConta.isPresent()) {
+            Conta conta = optConta.get();
+            Long ownerId = conta.getCorrentista().getId();
+            Correntista usuarioLogado = authService.getUsuarioLogado(session);
+            contaService.deleteById(idConta);
+            if (usuarioLogado.isAdmin()) {
+                return "redirect:/admin/correntista/" + ownerId + "/contas";
+            }
+        }
         return "redirect:/contas";
     }
 }

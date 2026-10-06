@@ -42,8 +42,15 @@
     </header>
 
     <main class="max-w-5xl mx-auto p-6">
-        <a th:href="@{/contas}" class="text-brand-purple underline text-sm mb-4 inline-block">&larr; Voltar para Minhas
+        <!-- Opção 1: É o próprio dono da conta (seja usuário comum ou admin vendo o próprio extrato) -->
+        <a th:if="${session.usuarioLogado != null and conta.correntista != null and session.usuarioLogado.id == conta.correntista.id}"
+            th:href="@{/contas}" class="text-brand-purple underline text-sm mb-4 inline-block">&larr; Voltar para Minhas
             Contas</a>
+
+        <!-- Opção 2: É o Admin vendo a conta de OUTRA pessoa -->
+        <a th:if="${session.usuarioLogado != null and conta.correntista != null and session.usuarioLogado.id != conta.correntista.id}"
+            th:href="@{/admin/correntista/{id}/contas(id=${conta.correntista.id})}"
+            class="text-brand-purple underline text-sm mb-4 inline-block">&larr; Voltar para Contas de <span th:text="${conta.correntista.nome}">Correntista</span></a>
 
         <div th:if="${mensagemSucesso}" class="bg-green-100 text-green-700 p-2 rounded mb-4 text-sm"
             th:text="${mensagemSucesso}"></div>
