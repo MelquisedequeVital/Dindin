@@ -40,6 +40,10 @@ public class Conta {
         this.correntista = correntista;
     }
 
+    public boolean isCartaoCredito() {
+        return false;
+    }
+
     public BigDecimal calcularSaldo() {
         BigDecimal valorTotal = BigDecimal.ZERO;
 
