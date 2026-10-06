@@ -26,13 +26,6 @@ public class Categoria {
     @ManyToOne
     @JoinColumn(name = "natureza_id")
     private Natureza natureza;
-    // Pq as categorias podem ser ativadas e desativadas, de acordo com o documento
-    // do professor:
-    // Um conjunto de categorias mínimas a serem indicadas devem ser
-    // obrigatoriamente já predefinidas pelo sistema e o
-    // usuário administrador pode cadastrar novas ou mesmo desativar uma das
-    // predefinidas (apenas o
-    // administrador!).
     private Boolean ativo = true;
     private Integer ordem;
 

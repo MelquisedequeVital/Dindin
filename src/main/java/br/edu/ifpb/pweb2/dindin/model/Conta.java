@@ -3,9 +3,12 @@ package br.edu.ifpb.pweb2.dindin.model;
 import java.math.BigDecimal;
 import java.util.List;
 
+import br.edu.ifpb.pweb2.dindin.model.enums.TipoConta;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,6 +26,9 @@ public class Conta {
     @Column(unique = true, nullable = false)
     private String numero;
     private String descricao;
+
+    @Enumerated(EnumType.STRING)
+    private TipoConta tipoConta;
 
     @ManyToOne
     @JoinColumn(name = "correntista_id")

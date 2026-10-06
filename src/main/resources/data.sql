@@ -50,21 +50,21 @@ INSERT INTO categoria (id, nome, natureza_id, ativo, ordem) VALUES
 (22, 'Aporte Previdência', 3, true, 4)
 ON CONFLICT (id) DO NOTHING;
 
--- 4. CONTAS / CARTOES DE CREDITO
-INSERT INTO conta (dtype, id, numero, descricao, correntista_id, dia_fechamento, limite_credito) VALUES
-('Conta', 1, '1001', 'Conta Principal - Melquisedeque', 1, null, null),
-('CartaoDeCredito', 2, '1002', 'Cartão Nubank - Melquisedeque', 1, 5, 8000.00),
-('Conta', 3, '1003', 'Conta Itaú - Mariana', 2, null, null),
-('CartaoDeCredito', 4, '1004', 'Cartão XP Black - Fred', 3, 10, 50000.00),
-('Conta', 5, '1005', 'Conta Corrente Banco do Brasil - Fred', 3, null, null),
-('Conta', 6, '1006', 'Conta Salário - Victor', 4, null, null),
-('CartaoDeCredito', 7, '1007', 'Cartão Inter - Cauê', 5, 15, 3000.00),
-('Conta', 8, '1008', 'Conta Santander - Rogério', 6, null, null),
-('Conta', 9, '1009', 'Conta Nubank - Mikael', 7, null, null),
-('CartaoDeCredito', 10, '1010', 'Cartão C6 - Murilo', 8, 20, 12000.00)
+-- 4. CONTAS / CARTOES DE CREDITO (Inclusão das colunas tipo_conta e bloqueado)
+INSERT INTO conta (dtype, id, numero, descricao, tipo_conta, correntista_id, dia_fechamento, limite_credito) VALUES
+('Conta', 1, '1001', 'Conta Principal - Melquisedeque', 'CORRENTE', 1, null, null),
+('CartaoDeCredito', 2, '1002', 'Cartão Nubank - Melquisedeque', 'CREDITO', 1, 5, 8000.00),
+('Conta', 3, '1003', 'Conta Itaú - Mariana', 'CORRENTE', 2, null, null),
+('CartaoDeCredito', 4, '1004', 'Cartão XP Black - Fred', 'CREDITO', 3, 10, 50000.00),
+('Conta', 5, '1005', 'Conta Corrente Banco do Brasil - Fred', 'CORRENTE', 3, null, null),
+('Conta', 6, '1006', 'Conta Salário - Victor', 'CORRENTE', 4, null, null),
+('CartaoDeCredito', 7, '1007', 'Cartão Inter - Cauê', 'CREDITO', 5, 15, 3000.00),
+('Conta', 8, '1008', 'Conta Santander - Rogério', 'CORRENTE', 6, null, null),
+('Conta', 9, '1009', 'Conta Nubank - Mikael', 'CORRENTE', 7, null, null),
+('CartaoDeCredito', 10, '1010', 'Cartão C6 - Murilo', 'CREDITO', 8, 20, 12000.00)
 ON CONFLICT (id) DO NOTHING;
 
--- 5. TRANSACOES (Inseridas ANTES dos comentários, sem a coluna comentario_id)
+-- 5. TRANSACOES
 INSERT INTO transacao (id, data, descricao, valor, conta_id, categoria_id) VALUES
 -- Transações do Administrador Melquisedeque (Conta 1 e Cartão 2)
 (1, '2025-01-05', 'Salário Executivo', 12500.00, 1, 1),
@@ -97,7 +97,7 @@ INSERT INTO transacao (id, data, descricao, valor, conta_id, categoria_id) VALUE
 (22, '2025-01-21', 'Fatura Telemóvel', 110.00, 10, 12)
 ON CONFLICT (id) DO NOTHING;
 
--- 6. COMENTARIOS (Vinculados às transações via transacao_id)
+-- 6. COMENTARIOS
 INSERT INTO comentario (id, texto, transacao_id) VALUES
 (1, 'Pagamento do salário referente ao mês de Janeiro', 1),
 (2, 'Almoço de negócios com clientes', 4),

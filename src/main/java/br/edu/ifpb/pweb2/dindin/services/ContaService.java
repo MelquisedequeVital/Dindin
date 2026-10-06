@@ -33,8 +33,8 @@ public class ContaService {
         contaRepository.save(conta);
     }
 
-    public boolean contaJaExiste(String numero){
-        Optional<Conta> contaEncontrada = contaRepository.findByNumero(numero);
+    public boolean contaJaExiste(String numero, Long correntistaId){
+        Optional<Conta> contaEncontrada = contaRepository.findByNumeroAndCorrentistaId(numero, correntistaId);
 
         return contaEncontrada.isPresent();
     }

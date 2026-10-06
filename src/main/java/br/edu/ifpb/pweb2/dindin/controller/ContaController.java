@@ -73,17 +73,19 @@ public class ContaController {
 
     @PostMapping
     public String addConta(HttpSession session, ContaForm contaForm, RedirectAttributes attr) {
-        if (contaService.contaJaExiste(contaForm.getNumero())) {
-            attr.addFlashAttribute("mensagemContaInvalida", "Conta existente, digite outro número");
-            return "redirect:/contas/nova";
-        }
+         Correntista correntista = authService.getUsuarioLogado(session);
 
         if (contaForm.getNumero() == null || contaForm.getNumero().trim().isEmpty()) {
             attr.addFlashAttribute("mensagemContaInvalida", "Número da conta obrigatório");
             return "redirect:/contas/nova";
         }
 
-        Correntista correntista = authService.getUsuarioLogado(session);
+         if (contaService.contaJaExiste(contaForm.getNumero(), correntista.getId())) {
+            attr.addFlashAttribute("mensagemContaInvalida", "Conta existente, digite outro número");
+            return "redirect:/contas/nova";
+        }
+
+       
         contaService.salvarFromDTO(contaForm, correntista);
         return "redirect:/contas";
     }
