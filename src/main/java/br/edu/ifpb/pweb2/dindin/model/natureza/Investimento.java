@@ -21,7 +21,12 @@ public class Investimento extends Natureza{
         return valor != null ? valor.abs() : BigDecimal.ZERO;
     }
 
-    @Override 
+    @Override
+    public String getNome(){
+        return "Investimento";
+    }
+
+    @Override
     public Movimento getMovimento(){
         return Movimento.DEBITO;
     }

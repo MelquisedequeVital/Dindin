@@ -24,6 +24,10 @@ public class CategoriaService {
         return categoriaRepository.findAll();
     }
 
+    public List<Categoria> findAllOrdenadas(){
+        return categoriaRepository.findAllByOrderByNaturezaIdAscOrdemAsc();
+    }
+
     public Optional<Categoria> findById(Long id){
         return categoriaRepository.findById(id);
     }

@@ -16,7 +16,12 @@ public class Saida extends Natureza{
         return valor.negate();
     }
 
-    @Override 
+    @Override
+    public String getNome(){
+        return "Saída";
+    }
+
+    @Override
     public Movimento getMovimento(){
         return Movimento.DEBITO;
     }

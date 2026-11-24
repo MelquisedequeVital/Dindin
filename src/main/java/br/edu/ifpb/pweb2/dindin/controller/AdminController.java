@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.edu.ifpb.pweb2.dindin.model.Conta;
 import br.edu.ifpb.pweb2.dindin.model.Correntista;
 import br.edu.ifpb.pweb2.dindin.model.enums.Role;
+import br.edu.ifpb.pweb2.dindin.services.CategoriaService;
 import br.edu.ifpb.pweb2.dindin.services.ContaService;
 import br.edu.ifpb.pweb2.dindin.services.UsuarioService;
 
@@ -27,6 +28,9 @@ public class AdminController {
 
     @Autowired 
     private ContaService contaService;
+
+    @Autowired
+    private CategoriaService categoriaService;
 
     @GetMapping("/correntistas")
     public String listaCorrentista(Model model){
@@ -61,6 +65,12 @@ public class AdminController {
         model.addAttribute("usuarioSendoVisualizado", usuarioVisualizado);
 
         return "contas/lista";
+    }
+
+    @GetMapping("/categorias")
+    public String listaCategorias(Model model){
+        model.addAttribute("categorias", categoriaService.findAllOrdenadas());
+        return "admin/categorias/lista";
     }
 
 

@@ -27,6 +27,8 @@ public abstract class Natureza {
 
     public abstract Movimento getMovimento();
 
+    public abstract String getNome();
+
     public BigDecimal calcularValorInvestido(BigDecimal valor){
         return BigDecimal.ZERO;
     }
