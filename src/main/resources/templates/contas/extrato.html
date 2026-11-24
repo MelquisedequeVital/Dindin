@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/correntista(titulo='Extrato')}">
 
-<head th:replace="~{fragments/head :: head('Extrato')}"></head>
+<body>
 
-<body class="bg-gray-100 text-gray-800 font-sans min-h-screen">
-
-    <header th:replace="~{fragments/header :: cabecalho}"></header>
-
-    <main class="max-w-5xl mx-auto p-6">
+    <main layout:fragment="conteudo" class="max-w-5xl mx-auto p-6">
         <!-- Opção 1: É o próprio dono da conta (seja usuário comum ou admin vendo o próprio extrato) -->
         <a th:if="${session.usuarioLogado != null and conta.correntista != null and session.usuarioLogado.id == conta.correntista.id}"
             th:href="@{/contas}" class="text-brand-purple underline text-sm mb-4 inline-block">&larr; Voltar para Minhas

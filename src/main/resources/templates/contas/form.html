@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/correntista(titulo='Nova Conta', menuSair=false)}">
 
-<head th:replace="~{fragments/head :: head('Nova Conta')}"></head>
+<body>
 
-<body class="bg-gray-100 text-gray-800 font-sans min-h-screen">
-
-    <header th:replace="~{fragments/header :: cabecalho(menuSair=false)}"></header>
-
-    <main class="max-w-sm mx-auto p-6 mt-6">
+    <main layout:fragment="conteudo" class="max-w-sm mx-auto p-6 mt-6">
         <a th:href="@{/contas}" class="text-brand-purple underline text-sm mb-4 inline-block">&larr; Voltar</a>
 
         <div th:if="${mensagemContaInvalida}" class="bg-red-100 text-red-700 p-2 rounded mb-4 text-center text-sm"
@@ -63,7 +60,7 @@
             </form>
         </div>
     </main>
-    <script>
+    <script layout:fragment="scripts">
         function toggleCamposCredito() {
             const selectTipo = document.getElementById('selectTipoConta');
             const camposCredito = document.getElementById('camposCredito');

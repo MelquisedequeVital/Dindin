@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<!--/*
+    Layout das telas do correntista (contas, extrato, transações).
+    Parâmetros: titulo (obrigatório), linkContas e menuSair (opcionais, padrão true,
+    repassados para o fragment fragments/header :: cabecalho)
+    Uso: <html layout:decorate="~{layouts/correntista(titulo='Minhas Contas', linkContas=false)}">
+*/-->
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:replace="~{fragments/head :: head(${titulo})}"></head>
+
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen">
+
+    <header th:replace="~{fragments/header :: cabecalho(linkContas=${linkContas}, menuSair=${menuSair})}"></header>
+
+    <main layout:fragment="conteudo"></main>
+
+    <th:block layout:fragment="scripts"></th:block>
+</body>
+
+</html>

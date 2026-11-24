@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Admin Novo Correntista')}"></head>
-<body class="bg-gray-100 text-gray-800 font-sans min-h-screen">
-    <!--TODO: mudar o fluxo quando deleta conta de usuario-->
-    <header th:replace="~{fragments/header :: cabecalhoAdmin(menuSair=false)}"></header>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/admin(titulo='Admin Novo Correntista', menuSair=false)}">
 
-    <main class="max-w-sm mx-auto p-6 mt-6">
+<body>
+    <!--TODO: mudar o fluxo quando deleta conta de usuario-->
+
+    <main layout:fragment="conteudo" class="max-w-sm mx-auto p-6 mt-6">
         <a th:href="@{/admin/correntistas}" class="text-brand-purple underline text-sm mb-4 inline-block">&larr; Voltar para o Painel</a>
         
         <div th:if="${mensagemUsernameInvalido}" class="bg-red-100 text-red-700 p-2 rounded mb-4 text-center text-sm" th:text="${mensagemUsernameInvalido}"></div>
