@@ -1,23 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Dindin - Admin Novo Correntista</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-    <script>tailwind.config = { theme: { extend: { colors: { brand: { purple: '#7C3AED' } } } } }</script>
-</head>
+<head th:replace="~{fragments/head :: head('Admin Novo Correntista')}"></head>
 <body class="bg-gray-100 text-gray-800 font-sans min-h-screen">
     <!--TODO: mudar o fluxo quando deleta conta de usuario-->
-    <header class="bg-gray-900 border-b border-gray-800 p-4 flex justify-between items-center text-white">
-        <div class="flex items-center gap-2 font-bold text-xl">
-            <span class="material-symbols-outlined text-brand-purple">admin_panel_settings</span> dindin Admin
-        </div>
-        <div class="flex items-center gap-4 text-sm font-semibold">
-            <a th:href="@{/admin/correntistas}" class="text-gray-400 hover:underline">Painel Admin</a>
-            <a th:href="@{/contas}" class="text-brand-purple hover:underline">Minhas Contas</a>
-        </div>
-    </header>
+    <header th:replace="~{fragments/header :: cabecalhoAdmin(menuSair=false)}"></header>
 
     <main class="max-w-sm mx-auto p-6 mt-6">
         <a th:href="@{/admin/correntistas}" class="text-brand-purple underline text-sm mb-4 inline-block">&larr; Voltar para o Painel</a>

@@ -38,24 +38,19 @@ public class ContaController {
         Correntista correntista = authService.getUsuarioLogado(session);
         List<Conta> listaContas = contaService.findByCorrentista(correntista);
         model.addAttribute("contas", listaContas);
-        model.addAttribute("nomeCorrentistaLogado", correntista.getNome());
         return "contas/lista";
     }
 
     @GetMapping("/nova")
-    public String contaForm(HttpSession session, Model model) {
-        Correntista correntista = authService.getUsuarioLogado(session);
+    public String contaForm(Model model) {
         model.addAttribute("contaForm", new ContaForm());
-        model.addAttribute("nomeCorrentistaLogado", correntista.getNome());
-        model.addAttribute("isAdmin", correntista.isAdmin());
         return "contas/form";
     }
 
     @GetMapping("/{id}")
-    public String extratoConta(@PathVariable("id") Long id, Model model, HttpSession session,
+    public String extratoConta(@PathVariable("id") Long id, Model model,
             RedirectAttributes redirectAttributes) {
         Optional<Conta> optConta = contaService.findById(id);
-        Correntista usuarioLogado = authService.getUsuarioLogado(session);
         if (optConta.isEmpty()) {
             redirectAttributes.addFlashAttribute("mensagemErro", "Conta não encontrada!");
             return "redirect:/contas";
@@ -63,8 +58,6 @@ public class ContaController {
 
         Conta conta = optConta.get();
         model.addAttribute("conta", conta);
-        model.addAttribute("nomeCorrentistaLogado", usuarioLogado.getNome());
-        model.addAttribute("isAdmin", usuarioLogado.isAdmin());
         model.addAttribute("valorTotalGasto", optConta.get().calcularSaldo());
         model.addAttribute("transacoes", transacaoService.findByConta(conta));
         model.addAttribute("valorInvestido", optConta.get().calcularTotalInvestido());
