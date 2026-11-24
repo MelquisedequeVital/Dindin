@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+    <!-- ===================== Cabeçalho do correntista ===================== -->
+    <header th:fragment="cabecalho"
+        th:with="usuario=${session.usuarioLogado},
+                 mostrarLinkContas=${linkContas ?: true},
+                 mostrarMenuSair=${menuSair ?: true}"
+        class="bg-white border-b border-gray-300 p-4 flex justify-between items-center">
+        <div class="flex items-center gap-2 text-brand-purple font-bold text-xl">
+            <span class="material-symbols-outlined">savings</span> dindin
+        </div>
+        <div class="flex items-center gap-4 text-sm font-semibold">
+            <a th:if="${mostrarLinkContas}" th:href="@{/contas}" class="hover:text-brand-purple">Minhas Contas</a>
+            <a th:if="${usuario?.isAdmin()}" th:href="@{/admin/correntistas}"
+                class="hover:text-brand-purple underline">Painel Admin</a>
+            <div th:replace="~{fragments/header :: menuUsuario(${usuario?.nome ?: 'Usuário'}, ${mostrarMenuSair})}"></div>
+        </div>
+    </header>
+
+    <!-- ===================== Cabeçalho do administrador ===================== -->
+    <header th:fragment="cabecalhoAdmin"
+        th:with="usuario=${session.usuarioLogado},
+                 mostrarLinkPainel=${linkPainel ?: true},
+                 mostrarMenuSair=${menuSair ?: true}"
+        class="bg-gray-900 border-b border-gray-800 p-4 flex justify-between items-center text-white">
+        <div class="flex items-center gap-2 font-bold text-xl">
+            <span class="material-symbols-outlined text-brand-purple">admin_panel_settings</span> dindin Admin
+        </div>
+        <div class="flex items-center gap-4 text-sm font-semibold">
+            <a th:if="${mostrarLinkPainel}" th:href="@{/admin/correntistas}" class="text-gray-400 hover:underline">Painel Admin</a>
+            <a th:href="@{/contas}" class="text-brand-purple hover:underline">Minhas Contas</a>
+            <div th:replace="~{fragments/header :: menuUsuario(${usuario?.nome ?: 'Admin'}, ${mostrarMenuSair})}"></div>
+        </div>
+    </header>
+
+    <!--
+        Menu do usuário (reaproveitado pelos dois cabeçalhos).
+        nome     -> nome exibido no "chip"
+        comSair  -> true: dropdown com "Sair" | false: só o chip com o nome
+    -->
+    <th:block th:fragment="menuUsuario(nome, comSair)">
+        <details th:if="${comSair}" class="relative inline-block text-left group">
+            <summary
+                class="flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 text-brand-purple cursor-pointer list-none hover:bg-gray-200 transition">
+                <span class="material-symbols-outlined text-sm">person</span>
+                <span th:text="${nome}">Usuário</span>
+                <span class="material-symbols-outlined text-sm">arrow_drop_down</span>
+            </summary>
+            <div
+                class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg border border-gray-200 z-50 overflow-hidden">
+                <form th:action="@{/logout}" method="post" class="m-0">
+                    <button type="submit"
+                        class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 font-semibold flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">logout</span> Sair
+                    </button>
+                </form>
+            </div>
+        </details>
+        <div th:unless="${comSair}"
+            class="flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 text-brand-purple">
+            <span class="material-symbols-outlined text-sm">person</span>
+            <span th:text="${nome}">Usuário</span>
+        </div>
+    </th:block>
+
+</body>
+</html>

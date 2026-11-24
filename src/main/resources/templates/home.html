@@ -1,21 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/publico(titulo='Home')}">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dindin - Home</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-        rel="stylesheet">
-    <script>
-        tailwind.config = { theme: { extend: { colors: { brand: { purple: '#7C3AED' } } } } }
-    </script>
-</head>
-
-<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col items-center justify-center p-6 text-center">
-
-
+<body>
+    <main layout:fragment="conteudo" class="flex flex-col items-center text-center">
     <div class="text-brand-purple flex items-center gap-2 mb-6">
         <span class="material-symbols-outlined text-5xl">savings</span>
         <span class="text-4xl font-extrabold">dindin</span>
@@ -36,9 +24,7 @@
             class="bg-brand-purple text-white font-bold py-2 px-6 rounded hover:bg-purple-700 transition">Criar
             Conta</a>
     </div>
-
-
-
+    </main>
 </body>
 
 </html>

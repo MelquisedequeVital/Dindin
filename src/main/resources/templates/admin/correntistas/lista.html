@@ -1,39 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Dindin - Admin Correntistas</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-    <script>tailwind.config = { theme: { extend: { colors: { brand: { purple: '#7C3AED' } } } } }</script>
-</head>
-<body class="bg-gray-100 text-gray-800 font-sans min-h-screen">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/admin(titulo='Admin Correntistas', linkPainel=false)}">
 
-    <header class="bg-gray-900 border-b border-gray-800 p-4 flex justify-between items-center text-white">
-        <div class="flex items-center gap-2 font-bold text-xl">
-            <span class="material-symbols-outlined text-brand-purple">admin_panel_settings</span> dindin Admin
-        </div>
-        <div class="flex items-center gap-4 text-sm font-semibold">
-            <a th:href="@{/admin/categorias}" class="hover:text-brand-purple underline">Categorias</a>
-            <a th:href="@{/contas}" class="hover:text-brand-purple underline">Minhas Contas</a>
-            <details class="relative inline-block text-left group">
-                <summary class="flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 text-brand-purple cursor-pointer list-none hover:bg-gray-200 transition">
-                    <span class="material-symbols-outlined text-sm">person</span>
-                    <span th:text="${session.usuarioLogado != null ? session.usuarioLogado.nome : 'Admin'}">Admin</span>
-                    <span class="material-symbols-outlined text-sm">arrow_drop_down</span>
-                </summary>
-                <div class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg border border-gray-200 z-50 overflow-hidden">
-                    <form th:action="@{/logout}" method="post" class="m-0">
-                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 font-semibold flex items-center gap-2">
-                            <span class="material-symbols-outlined text-sm">logout</span> Sair
-                        </button>
-                    </form>
-                </div>
-            </details>
-        </div>
-    </header>
 
-    <main class="max-w-4xl mx-auto p-6">
+    <main layout:fragment="conteudo" class="max-w-4xl mx-auto p-6">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold">Correntistas</h1>
             <a th:href="@{/admin/correntistas/novo}" class="bg-brand-purple hover:bg-purple-700 text-white px-4 py-2 rounded font-bold text-sm">+ Novo Correntista</a>

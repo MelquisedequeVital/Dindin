@@ -1,34 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/correntista(titulo='Nova Conta', menuSair=false)}">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Dindin - Nova Conta</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-        rel="stylesheet">
-    <script>tailwind.config = { theme: { extend: { colors: { brand: { purple: '#7C3AED' } } } } }</script>
-</head>
+<body>
 
-<body class="bg-gray-100 text-gray-800 font-sans min-h-screen">
-
-    <header class="bg-white border-b border-gray-300 p-4 flex justify-between items-center">
-        <div class="flex items-center gap-2 text-brand-purple font-bold text-xl">
-            <span class="material-symbols-outlined">savings</span> dindin
-        </div>
-        <div class="flex items-center gap-4 text-sm font-semibold">
-            <a th:href="@{/contas}" class="hover:text-brand-purple underline">Minhas Contas</a>
-            <a th:if="${isAdmin != null and isAdmin}" th:href="@{/admin/correntistas}"
-                class="hover:text-brand-purple underline">Painel Admin</a>
-            <div
-                class="flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 text-brand-purple">
-                <span class="material-symbols-outlined text-sm">person</span>
-                <span th:text="${nomeCorrentistaLogado != null ? nomeCorrentistaLogado : 'Usuário'}">Usuário</span>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-sm mx-auto p-6 mt-6">
+    <main layout:fragment="conteudo" class="max-w-sm mx-auto p-6 mt-6">
         <a th:href="@{/contas}" class="text-brand-purple underline text-sm mb-4 inline-block">&larr; Voltar</a>
 
         <div th:if="${mensagemContaInvalida}" class="bg-red-100 text-red-700 p-2 rounded mb-4 text-center text-sm"
@@ -84,7 +60,7 @@
             </form>
         </div>
     </main>
-    <script>
+    <script layout:fragment="scripts">
         function toggleCamposCredito() {
             const selectTipo = document.getElementById('selectTipoConta');
             const camposCredito = document.getElementById('camposCredito');
