@@ -16,7 +16,12 @@ public class Entrada  extends Natureza{
         return valor.abs(); 
     }
 
-    @Override 
+    @Override
+    public String getNome(){
+        return "Entrada";
+    }
+
+    @Override
     public Movimento getMovimento(){
         return Movimento.CREDITO;
     }

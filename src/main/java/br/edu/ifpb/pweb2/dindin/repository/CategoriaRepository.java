@@ -8,4 +8,6 @@ import br.edu.ifpb.pweb2.dindin.model.Categoria;
 
 public interface CategoriaRepository extends JpaRepository<Categoria, Long>{
     List<Categoria> findByAtivoTrue();
+
+    List<Categoria> findAllByOrderByNaturezaIdAscOrdemAsc();
 }
